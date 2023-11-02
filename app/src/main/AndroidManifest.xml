@@ -24,4 +24,6 @@
         </activity>
     </application>
 
+<!--    required to read SQLite files -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 </manifest>
