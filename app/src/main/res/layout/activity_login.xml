@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".login">
+    tools:context=".LoginActivity">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -19,7 +19,7 @@
             android:layout_height="150dp"
             android:layout_gravity="center"
             android:contentDescription="@string/app_logo_description"
-            android:src="@drawable/app_logo" />
+            android:src="@drawable/ic_launcher_background" />
 
         <!-- Email Input -->
         <EditText
@@ -41,10 +41,12 @@
 
         <!-- Login Button -->
         <Button
+            android:id="@+id/loginButton"
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:onClick="loginClick"
+
             android:text="Login" />
 
         <!-- Sign Up Link -->
@@ -53,7 +55,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:gravity="center"
-            android:onClick="signupClick"
+
             android:text="Don't have an account? Sign Up" />
 
     </LinearLayout>

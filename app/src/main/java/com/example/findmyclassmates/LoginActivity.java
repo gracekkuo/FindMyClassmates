@@ -2,6 +2,7 @@ package com.example.findmyclassmates;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
 import android.os.Bundle;
@@ -9,7 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-public class login extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
     private EditText emailEditText;
     private EditText passwordEditText;
@@ -23,7 +24,7 @@ public class login extends AppCompatActivity {
         emailEditText = findViewById(R.id.emailEditText);
         passwordEditText = findViewById(R.id.passwordEditText);
 
-        /*Button loginButton = findViewById(R.id.loginButton);
+        Button loginButton = findViewById(R.id.loginButton);
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -32,10 +33,12 @@ public class login extends AppCompatActivity {
                 String email = emailEditText.getText().toString();
                 String password = passwordEditText.getText().toString();
 
-                // You can then use the 'email' and 'password' for login validation.
-                // Implement your login logic here.
+                //login validation
+                //email use regex
+                //once everything is validated and response is 200.
+                startActivity(new Intent(LoginActivity.this, MainActivity.class));
             }
-        });*/
+        });
 
     }
 }
