@@ -14,6 +14,12 @@
         android:theme="@style/Theme.FindMyClassmates"
         tools:targetApi="31">
         <activity
+            android:name=".signup"
+            android:exported="false" />
+        <activity
+            android:name=".login"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
@@ -24,4 +30,6 @@
         </activity>
     </application>
 
+<!--    required to read SQLite files -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 </manifest>
