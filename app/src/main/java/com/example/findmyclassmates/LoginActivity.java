@@ -23,7 +23,7 @@ public class login extends AppCompatActivity {
         emailEditText = findViewById(R.id.emailEditText);
         passwordEditText = findViewById(R.id.passwordEditText);
 
-        Button loginButton = findViewById(R.id.loginButton);
+        /*Button loginButton = findViewById(R.id.loginButton);
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -35,7 +35,7 @@ public class login extends AppCompatActivity {
                 // You can then use the 'email' and 'password' for login validation.
                 // Implement your login logic here.
             }
-        });
+        });*/
 
     }
 }
