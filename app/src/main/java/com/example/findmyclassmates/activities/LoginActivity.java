@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.findmyclassmates.R;
+import com.example.findmyclassmates.activities.mainFeatures.TabbedFeatures;
 import com.example.findmyclassmates.models.User;
 import com.example.findmyclassmates.viewModels.UserViewModel;
 
@@ -48,7 +49,7 @@ public class LoginActivity extends AppCompatActivity {
 
             viewModel.login(user).observe(this, isSuccessful -> {
                 //Toast.makeText(LoginActivity.this, isSuccessful ? "True": "False", Toast.LENGTH_SHORT).show();
-                if (isSuccessful) startActivity(new Intent(this, MainActivity.class));
+                if (isSuccessful) startActivity(new Intent(this, TabbedFeatures.class));
                 else Toast.makeText(LoginActivity.this, "Login failed. Please try again.", Toast.LENGTH_SHORT).show();
             });
         });
