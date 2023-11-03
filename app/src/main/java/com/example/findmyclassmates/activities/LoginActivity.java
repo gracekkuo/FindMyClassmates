@@ -14,7 +14,6 @@ import android.widget.Toast;
 import com.example.findmyclassmates.R;
 import com.example.findmyclassmates.activities.mainFeatures.TabbedFeatures;
 import com.example.findmyclassmates.models.User;
-import com.example.findmyclassmates.viewModels.UserViewModel;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -42,16 +41,15 @@ public class LoginActivity extends AppCompatActivity {
                 return; // Don't proceed further
             }
 
-            UserViewModel viewModel = new ViewModelProvider(this).get(UserViewModel.class);
             User user = new User();
             user.setEmail(email);
             user.setPassword(password);
 
-            viewModel.login(user).observe(this, isSuccessful -> {
-                //Toast.makeText(LoginActivity.this, isSuccessful ? "True": "False", Toast.LENGTH_SHORT).show();
-                if (isSuccessful) startActivity(new Intent(this, TabbedFeatures.class));
-                else Toast.makeText(LoginActivity.this, "Login failed. Please try again.", Toast.LENGTH_SHORT).show();
-            });
+//            viewModel.login(user).observe(this, isSuccessful -> {
+//                //Toast.makeText(LoginActivity.this, isSuccessful ? "True": "False", Toast.LENGTH_SHORT).show();
+//                if (isSuccessful) startActivity(new Intent(this, TabbedFeatures.class));
+//                else Toast.makeText(LoginActivity.this, "Login failed. Please try again.", Toast.LENGTH_SHORT).show();
+//            });
         });
 
         TextView signinLink = findViewById(R.id.signinButton);
