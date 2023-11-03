@@ -1,16 +1,19 @@
-package com.example.findmyclassmates;
+package com.example.findmyclassmates.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
-import android.os.Bundle;
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.findmyclassmates.R;
+import com.example.findmyclassmates.models.User;
+import com.example.findmyclassmates.viewModels.UserViewModel;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -27,30 +30,27 @@ public class LoginActivity extends AppCompatActivity {
         passwordEditText = findViewById(R.id.passwordEditText);
 
         Button loginButton = findViewById(R.id.loginButton);
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Get the user's input from the EditText fields
-                String email = emailEditText.getText().toString();
-                String password = passwordEditText.getText().toString();
+        loginButton.setOnClickListener(v -> {
+            // Get the user's input from the EditText fields
+            String email = emailEditText.getText().toString();
+            String password = passwordEditText.getText().toString();
 
-                if (!isValidEmail(email)) {
-                    // Show an error message for invalid email
-                    Toast.makeText(LoginActivity.this, "Invalid email address", Toast.LENGTH_SHORT).show();
-                    return; // Don't proceed further
-                }
-
-                //password validation. if valid return 200
-
-                int responseCode = 200;
-                if (responseCode == 200) {
-                    // Start the MainActivity
-                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                } else {
-                    // Show an error for unsuccessful login
-                    Toast.makeText(LoginActivity.this, "Login failed. Please try again.", Toast.LENGTH_SHORT).show();
-                }
+            if (!isValidEmail(email)) {
+                // Show an error message for invalid email
+                Toast.makeText(LoginActivity.this, "Invalid email address", Toast.LENGTH_SHORT).show();
+                return; // Don't proceed further
             }
+
+            UserViewModel viewModel = new ViewModelProvider(this).get(UserViewModel.class);
+            User user = new User();
+            user.setEmail(email);
+            user.setPassword(password);
+
+            viewModel.login(user).observe(this, isSuccessful -> {
+                //Toast.makeText(LoginActivity.this, isSuccessful ? "True": "False", Toast.LENGTH_SHORT).show();
+                if (isSuccessful) startActivity(new Intent(this, MainActivity.class));
+                else Toast.makeText(LoginActivity.this, "Login failed. Please try again.", Toast.LENGTH_SHORT).show();
+            });
         });
 
         TextView signinLink = findViewById(R.id.signinButton);

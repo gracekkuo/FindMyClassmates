@@ -1,4 +1,4 @@
-package com.example.findmyclassmates;
+package com.example.findmyclassmates.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.example.findmyclassmates.R;
 
 public class SignupActivity extends AppCompatActivity {
 
@@ -51,6 +53,7 @@ public class SignupActivity extends AppCompatActivity {
                 }
 
                 //insert into db, if valid return 200
+
 
                 int responseCode = 200;
                 if (responseCode == 200) {
