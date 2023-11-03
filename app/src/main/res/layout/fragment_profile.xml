@@ -112,7 +112,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="user type"
-                android:visibility="gone"/>
+                android:visibility="invisible"/>
         </LinearLayout>
         <!-- Add more TextViews for other user info (Last Name, Student ID, Email, Profession, etc.) -->
 
