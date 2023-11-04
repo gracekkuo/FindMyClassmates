@@ -2,13 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.findmyclassmates">
-    <!-- required to read SQLite files -->
-<!--    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />-->
 
-<!--    <uses-permission android:name="android.permission.INTERNET"/>-->
     <application
         android:allowBackup="true"
-        android:usesCleartextTraffic="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
@@ -16,10 +12,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.FindMyClassmates"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
-
-
-<!--        tools:replace="android:appComponentFactory"-->
+        <activity
+            android:name=".activities.mainFeatures.course_list"
+            android:exported="false"
+            android:label="@string/title_activity_course_list"
+            android:theme="@style/Theme.FindMyClassmates" />
+        <!-- tools:replace="android:appComponentFactory" -->
         <activity
             android:name=".activities.mainFeatures.TabbedFeatures"
             android:exported="true" />

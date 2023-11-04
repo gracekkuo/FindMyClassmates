@@ -71,11 +71,11 @@ public class CourseViewFragment extends Fragment {
 
         // Initialize the list of categories
         categoryList = new ArrayList<>();
-        categoryList.add(new DepartmentItem("Department 1", new String[]{"Item 1", "Item 2", "Item 3"}));
-        categoryList.add(new DepartmentItem("Department 2", new String[]{"Item 4", "Item 5", "Item 6"}));
-        categoryList.add(new DepartmentItem("Department 3", new String[]{"Item 7", "Item 8", "Item 9"}));
-        categoryList.add(new DepartmentItem("Department 4", new String[]{"Item 10", "Item 11", "Item 12"}));
-        categoryList.add(new DepartmentItem("Department 5", new String[]{"Item 13", "Item 14", "Item 15"}));
+        categoryList.add(new DepartmentItem("CSCI - Computer Science", new String[]{"102", "103", "104", "170", "201", "270"}));
+        categoryList.add(new DepartmentItem("BUAD - Business Administration", new String[]{"301", "302", "304", "306", "307", "310"}));
+        categoryList.add(new DepartmentItem("DANC - Dance", new String[]{"101", "110", "120", "131", "140", "150"}));
+        categoryList.add(new DepartmentItem("ITP - Information Technology Program", new String[]{"101", "104", "115", "116", "125", "165"}));
+        categoryList.add(new DepartmentItem("DSCI - Data Science", new String[]{"351", "352", "454", "510", "525", "529"}));
 
         DepartmentAdapter adapter = new DepartmentAdapter(categoryList);
         recyclerView.setAdapter(adapter);
