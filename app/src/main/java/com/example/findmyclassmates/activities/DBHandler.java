@@ -1,4 +1,4 @@
-package com.example.findmyclassmates;
+package com.example.findmyclassmates.activities;
 
 import android.content.ContentValues;
 import android.content.Context;

@@ -12,15 +12,25 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.FindMyClassmates"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".signup"
-            android:exported="false" />
+            android:name=".activities.mainFeatures.course_list"
+            android:exported="false"
+            android:label="@string/title_activity_course_list"
+            android:theme="@style/Theme.FindMyClassmates" />
+        <!-- tools:replace="android:appComponentFactory" -->
         <activity
-            android:name=".LoginActivity"
+            android:name=".activities.mainFeatures.TabbedFeatures"
             android:exported="true" />
         <activity
-            android:name=".MainActivity"
+            android:name=".activities.SignupActivity"
+            android:exported="true" />
+        <activity
+            android:name=".activities.LoginActivity"
+            android:exported="true" />
+        <activity
+            android:name=".activities.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,6 +40,4 @@
         </activity>
     </application>
 
-<!--    required to read SQLite files -->
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 </manifest>

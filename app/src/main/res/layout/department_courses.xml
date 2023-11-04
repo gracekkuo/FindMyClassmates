@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <!-- Category name -->
+    <TextView
+        android:id="@+id/departmentName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:padding="8dp" />
+
+    <!-- Dropdown button -->
+    <ImageButton
+        android:id="@+id/expandButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@android:drawable/arrow_down_float" />
+
+    <!-- Sublist of items (initially hidden) -->
+    <!-- <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/subRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone" /> -->
+
+    <!-- items -->
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/courseList"
+        android:visibility="gone"> <!-- Set initial visibility to "gone" -->
+
+        <TextView
+            android:id="@+id/course1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Clickable TextView 1"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="8dp" />
+
+        <TextView
+            android:id="@+id/course2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Clickable TextView 2"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="8dp" />
+
+        <TextView
+            android:id="@+id/course3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Clickable TextView 3"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="8dp" />
+
+        <TextView
+            android:id="@+id/course4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Clickable TextView 4"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="8dp" />
+
+        <TextView
+            android:id="@+id/course5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Clickable TextView 5"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="8dp" />
+
+        <TextView
+            android:id="@+id/course6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Clickable TextView 5"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="8dp" />
+    </LinearLayout>
+
+
+</LinearLayout>
