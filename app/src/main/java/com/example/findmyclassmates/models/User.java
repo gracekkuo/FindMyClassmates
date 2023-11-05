@@ -1,6 +1,9 @@
 package com.example.findmyclassmates.models;
 
 public class User {
+    private String profilePic;
+    private String userID;
+
     private int id;
     String firstName;
     String lastName;
@@ -9,6 +12,27 @@ public class User {
     String profilePhoto;
     String password;
 
+    public User(String emailAddress, String userID, String profilePic) {
+        this.email = emailAddress;
+        this.userID = userID;
+        this.profilePic = profilePic;
+    }
+
+    public String getUserID() {
+        return userID;
+    }
+
+    public void setUserID(String userId) {
+        this.userID = userId;
+    }
+
+    public String getProfilePic() {
+        return profilePic;
+    }
+
+    public void setProfilePic(String profilePic) {
+        this.profilePic = profilePic;
+    }
 
     public int getId() {
         return id;
