@@ -49,7 +49,7 @@
             android:text="Login" />
 
         <!-- Sign Up Link -->
-        <TextView
+        <Button
             android:id="@+id/signinButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

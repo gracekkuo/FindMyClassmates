@@ -6,133 +6,149 @@
     android:layout_height="match_parent"
     tools:context=".activities.SignupActivity">
 
-    <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="30dp"
-        android:background="@color/white">
+        android:scrollbarThumbVertical="@android:color/transparent">
 
-        <!-- First Name Input Bubble -->
         <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="30dp">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="30dp"
+            android:background="@color/white">
 
-            <EditText
-                android:id="@+id/firstNameEditText"
-                android:layout_width="0dp"
-                android:layout_weight="1"
+            <!--        add pfp-->
+            <ImageView
+                android:id="@+id/show_user_profile"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:src="@drawable/ic_add_profile"
+
+                />
+
+            <!-- First Name Input Bubble -->
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="First Name" />
-        </LinearLayout>
+                android:orientation="horizontal"
+                android:layout_marginTop="30dp">
 
-        <!-- Last Name Input Bubble -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="8dp">
+                <EditText
+                    android:id="@+id/firstNameEditText"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:hint="First Name" />
+            </LinearLayout>
 
-            <EditText
-                android:id="@+id/lastNameEditText"
-                android:layout_width="0dp"
-                android:layout_weight="1"
+            <!-- Last Name Input Bubble -->
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Last Name" />
-        </LinearLayout>
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp">
 
-        <!-- Student ID Input Bubble -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="8dp">
+                <EditText
+                    android:id="@+id/lastNameEditText"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:hint="Last Name" />
+            </LinearLayout>
 
-            <EditText
-                android:id="@+id/studentIdEditText"
-                android:layout_width="0dp"
-                android:layout_weight="1"
+            <!-- Student ID Input Bubble -->
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Student ID" />
-        </LinearLayout>
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp">
 
-        <!-- USC Email Input Bubble -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="8dp">
+                <EditText
+                    android:id="@+id/studentIdEditText"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:hint="Student ID" />
+            </LinearLayout>
 
-            <EditText
-                android:id="@+id/uscEmailEditText"
-                android:layout_width="0dp"
-                android:layout_weight="1"
+            <!-- USC Email Input Bubble -->
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="USC Email"
-                android:inputType="textEmailAddress" />
-        </LinearLayout>
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp">
 
-        <!-- Password Input Bubble -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="8dp">
+                <EditText
+                    android:id="@+id/uscEmailEditText"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:hint="USC Email"
+                    android:inputType="textEmailAddress" />
+            </LinearLayout>
 
-            <EditText
-                android:id="@+id/passwordEditText"
-                android:layout_width="0dp"
-                android:layout_weight="1"
+            <!-- Password Input Bubble -->
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Password"
-                android:inputType="textPassword" />
-        </LinearLayout>
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp">
 
-        <!-- Reenter Password Input Bubble -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="8dp">
+                <EditText
+                    android:id="@+id/passwordEditText"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:hint="Password"
+                    android:inputType="textPassword" />
+            </LinearLayout>
 
-            <EditText
-                android:id="@+id/reenterPasswordEditText"
-                android:layout_width="0dp"
-                android:layout_weight="1"
+            <!-- Reenter Password Input Bubble -->
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Reenter Password"
-                android:inputType="textPassword" />
-        </LinearLayout>
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp">
 
-        <!-- Profile Picture File Submission -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="8dp">
+                <EditText
+                    android:id="@+id/reenterPasswordEditText"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:hint="Reenter Password"
+                    android:inputType="textPassword" />
+            </LinearLayout>
 
+            <!-- Profile Picture File Submission -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp">
+
+                <Button
+                    android:id="@+id/uploadPictureButton"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="Upload Profile Picture"
+                    android:layout_marginStart="8dp"
+                    android:background="@android:color/transparent"
+                    android:textColor="@color/red" />
+            </LinearLayout>
+
+            <!-- Sign Up Button -->
             <Button
-                android:id="@+id/uploadPictureButton"
-                android:layout_width="0dp"
-                android:layout_weight="1"
+                android:id="@+id/signupButton"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Upload Profile Picture"
-                android:layout_marginStart="8dp"
-                android:background="@android:color/transparent"
-                android:textColor="@color/red" />
+                android:text="Sign Up"
+                android:layout_marginTop="16dp" />
+
         </LinearLayout>
 
-        <!-- Sign Up Button -->
-        <Button
-            android:id="@+id/signupButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Sign Up"
-            android:layout_marginTop="16dp" />
-
-    </LinearLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

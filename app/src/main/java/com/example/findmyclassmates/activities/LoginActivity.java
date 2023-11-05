@@ -41,9 +41,9 @@ public class LoginActivity extends AppCompatActivity {
                 return; // Don't proceed further
             }
 
-            User user = new User();
-            user.setEmail(email);
-            user.setPassword(password);
+//            User user = new User();
+//            user.setEmail(email);
+//            user.setPassword(password);
 
 //            viewModel.login(user).observe(this, isSuccessful -> {
 //                //Toast.makeText(LoginActivity.this, isSuccessful ? "True": "False", Toast.LENGTH_SHORT).show();
