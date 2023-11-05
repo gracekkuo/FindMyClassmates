@@ -10,12 +10,16 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.findmyclassmates.R;
+import com.example.findmyclassmates.models.Course;
+import com.google.firebase.database.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class DepartmentAdapter extends RecyclerView.Adapter<DepartmentAdapter.DepartmentViewHolder> {
     private ArrayList<DepartmentItem> departmentList;
+    FirebaseDatabase db;
+    DatabaseReference reference;
     //private boolean[] isExpanded;
 
     public DepartmentAdapter(ArrayList<DepartmentItem> departmentList) {
@@ -35,6 +39,10 @@ public class DepartmentAdapter extends RecyclerView.Adapter<DepartmentAdapter.De
     public void onBindViewHolder(@NonNull DepartmentViewHolder holder, int position) {
         DepartmentItem departmentItem = departmentList.get(position);
         holder.departmentName.setText(departmentItem.getDepartmentName());
+
+        //get firebase setup
+        db = FirebaseDatabase.getInstance();
+        reference = db.getReference("Courses");
 
         //get dept
         String[] dept = departmentItem.getDepartmentName().split("\\s+");

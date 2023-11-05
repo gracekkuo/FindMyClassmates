@@ -14,6 +14,7 @@ public class TabbedFeatures extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //addCoursesToDB.main();
         setContentView(R.layout.activity_tabbed_features);
 
         TabLayout tabLayout = findViewById(R.id.tabLayout);
