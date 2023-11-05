@@ -9,18 +9,8 @@ import java.util.Map;
 public class addCoursesToDB {
     public static void main() {
 
-            //FileInputStream serviceAccount = new FileInputStream("path/to/your/google-services.json");
-
-            //FirebaseOptions options = new FirebaseOptions.Builder()
-                    //.setCredentials(GoogleCredentials.fromStream(serviceAccount))
-                    //.setDatabaseUrl("https://your-project-id.firebaseio.com/") // Replace with your Firebase Database URL
-                    //.build();
-
-            //FirebaseApp.initializeApp(options);
-
-            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-
-            // Add the database entries
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+        // Add the database entries
         addCourse(databaseReference, "CSCI", "102", "Fundamentals of Computation", "Mohammad Reza Rajati", "TTH 3:00-4:20", 4, "", "");
         addCourse(databaseReference, "CSCI", "103", "Introduction to Programming", "Mark Redekopp", "MW: 10:00-11:20", 4, "", "");
         addCourse(databaseReference, "CSCI", "104", "Data Structures and Object Oriented Design", "Andrew Goodney", "MW: 10:00-11:20", 4, "", "");
@@ -51,8 +41,6 @@ public class addCoursesToDB {
         addCourse(databaseReference, "DSCI", "510", "Principles of Programming for Data Science", "Tanya Rustov", "TTH 11:00-12:50", 4, "", "");
         addCourse(databaseReference, "DSCI", "525", "Trusted System Design, Analysis, and Development", "Clifford Neuman", "MW: 2:00-3:20", 4, "", "");
         addCourse(databaseReference, "DSCI", "529", "Security and Privacy", "Luca Luceri", "MW: 10:00-11:50", 4, "", "");
-
-
 
     }
 

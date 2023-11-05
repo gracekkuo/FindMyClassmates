@@ -66,7 +66,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Reviews Button -->
+    <!-- ReviewsActivity Button -->
     <Button
         android:id="@+id/buttonReviews"
         android:layout_width="match_parent"

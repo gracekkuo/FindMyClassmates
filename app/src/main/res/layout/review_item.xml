@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- review_item.xml -->
+<!-- review_item.xml -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp">
+
+    <!-- Review comment 1 -->
+    <TextView
+        android:id="@+id/reviewText1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="The workload of the class:"
+        android:textSize="16sp"
+        android:textStyle="italic" />
+
+    <TextView
+        android:id="@+id/review1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="This is a review comment."
+        android:textSize="16sp"
+        android:layout_below="@id/reviewText1" />
+
+    <!-- Review comment 2 -->
+    <TextView
+        android:id="@+id/reviewText2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="The score they would like to give to this class:"
+        android:textSize="16sp"
+        android:textStyle="italic"
+        android:layout_below="@id/review1" />
+
+    <TextView
+        android:id="@+id/review2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="This is a review comment."
+        android:textSize="16sp"
+        android:layout_below="@id/reviewText2" />
+
+    <!-- Review comment 3 -->
+    <TextView
+        android:id="@+id/reviewText3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="If the professor checks attendance:"
+        android:textSize="16sp"
+        android:textStyle="italic"
+        android:layout_below="@id/review2" />
+
+    <TextView
+        android:id="@+id/review3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="This is a review comment."
+        android:textSize="16sp"
+        android:layout_below="@id/reviewText3" />
+
+    <!-- Review comment 4 -->
+    <TextView
+        android:id="@+id/reviewText4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="If the professor allows late homework submission:"
+        android:textSize="16sp"
+        android:textStyle="italic"
+        android:layout_below="@id/review3" />
+
+    <TextView
+        android:id="@+id/review4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="This is a review comment."
+        android:textSize="16sp"
+        android:layout_below="@id/reviewText4" />
+
+    <!-- Review comment 5 -->
+    <TextView
+        android:id="@+id/reviewText5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Other comments:"
+        android:textSize="16sp"
+        android:textStyle="italic"
+        android:layout_below="@id/review4" />
+
+    <TextView
+        android:id="@+id/review5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="This is a review comment."
+        android:textSize="16sp"
+        android:layout_below="@id/reviewText5" />
+
+    <!-- User -->
+    <TextView
+        android:id="@+id/user"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="username"
+        android:textSize="16sp"
+        android:layout_below="@id/review5" />
+
+    <!-- Upvote and Downvote Layout -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/user"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="8dp">
+
+        <!-- Upvote Button -->
+        <ImageButton
+            android:id="@+id/upvoteButton"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="?android:selectableItemBackground"
+            android:src="@android:drawable/arrow_up_float" />
+
+        <!-- Upvote Count -->
+        <TextView
+            android:id="@+id/upvoteCountTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:text="0" />
+
+        <!-- Downvote Button -->
+        <ImageButton
+            android:id="@+id/downvoteButton"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="?android:selectableItemBackground"
+            android:src="@android:drawable/arrow_down_float" />
+
+        <!-- Downvote Count -->
+        <TextView
+            android:id="@+id/downvoteCountTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:text="0" />
+    </LinearLayout>
+</RelativeLayout>
