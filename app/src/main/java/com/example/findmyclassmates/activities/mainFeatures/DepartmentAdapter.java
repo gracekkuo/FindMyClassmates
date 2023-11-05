@@ -1,8 +1,12 @@
 package com.example.findmyclassmates.activities.mainFeatures;
 
+import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -11,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.findmyclassmates.R;
 import com.example.findmyclassmates.models.Course;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.database.*;
 
 import java.util.ArrayList;
@@ -20,10 +25,13 @@ public class DepartmentAdapter extends RecyclerView.Adapter<DepartmentAdapter.De
     private ArrayList<DepartmentItem> departmentList;
     FirebaseDatabase db;
     DatabaseReference reference;
+    private Context context;
+    Course nowCourse;
     //private boolean[] isExpanded;
 
-    public DepartmentAdapter(ArrayList<DepartmentItem> departmentList) {
+    public DepartmentAdapter(ArrayList<DepartmentItem> departmentList, Context context) {
         this.departmentList = departmentList;
+        this.context = context;
         //isExpanded = new boolean[departmentList.size()];
         //Arrays.fill(isExpanded, false);
     }
@@ -67,6 +75,86 @@ public class DepartmentAdapter extends RecyclerView.Adapter<DepartmentAdapter.De
                 //notifyItemChanged(position); // Notify the adapter to update the view
             }
         });
+
+        TextView textViewCourse1 = holder.course1;
+        TextView textViewCourse2 = holder.course2;
+        TextView textViewCourse3 = holder.course3;
+        TextView textViewCourse4 = holder.course4;
+        TextView textViewCourse5 = holder.course5;
+        TextView textViewCourse6 = holder.course6;
+        textViewCourse1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DepartmentItem departmentItem = departmentList.get(holder.getBindingAdapterPosition());
+                holder.departmentName.setText(departmentItem.getDepartmentName());
+                // find the course
+                courseFinder courseFinder = new courseFinder(reference);
+                String[] dept = departmentItem.getDepartmentName().split("\\s+");
+                System.out.println(dept[0]+departmentItem.getSubItems()[0]);
+                Course course = courseFinder.findCourse(dept[0],departmentItem.getSubItems()[0], context); //change subitems index
+            }
+        });
+        textViewCourse2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DepartmentItem departmentItem = departmentList.get(holder.getBindingAdapterPosition());
+                holder.departmentName.setText(departmentItem.getDepartmentName());
+                // find the course
+                courseFinder courseFinder = new courseFinder(reference);
+                String[] dept = departmentItem.getDepartmentName().split("\\s+");
+                System.out.println(dept[0]+departmentItem.getSubItems()[0]);
+                Course course = courseFinder.findCourse(dept[0],departmentItem.getSubItems()[1], context); //change subitems index
+            }
+        });
+        textViewCourse3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DepartmentItem departmentItem = departmentList.get(holder.getBindingAdapterPosition());
+                holder.departmentName.setText(departmentItem.getDepartmentName());
+                // find the course
+                courseFinder courseFinder = new courseFinder(reference);
+                String[] dept = departmentItem.getDepartmentName().split("\\s+");
+                System.out.println(dept[0]+departmentItem.getSubItems()[0]);
+                Course course = courseFinder.findCourse(dept[0],departmentItem.getSubItems()[2], context); //change subitems index
+            }
+        });
+        textViewCourse4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DepartmentItem departmentItem = departmentList.get(holder.getBindingAdapterPosition());
+                holder.departmentName.setText(departmentItem.getDepartmentName());
+                // find the course
+                courseFinder courseFinder = new courseFinder(reference);
+                String[] dept = departmentItem.getDepartmentName().split("\\s+");
+                System.out.println(dept[0]+departmentItem.getSubItems()[0]);
+                Course course = courseFinder.findCourse(dept[0],departmentItem.getSubItems()[3], context); //change subitems index
+            }
+        });
+        textViewCourse5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DepartmentItem departmentItem = departmentList.get(holder.getBindingAdapterPosition());
+                holder.departmentName.setText(departmentItem.getDepartmentName());
+                // find the course
+                courseFinder courseFinder = new courseFinder(reference);
+                String[] dept = departmentItem.getDepartmentName().split("\\s+");
+                System.out.println(dept[0]+departmentItem.getSubItems()[0]);
+                Course course = courseFinder.findCourse(dept[0],departmentItem.getSubItems()[4], context); //change subitems index
+            }
+        });
+        textViewCourse6.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DepartmentItem departmentItem = departmentList.get(holder.getBindingAdapterPosition());
+                holder.departmentName.setText(departmentItem.getDepartmentName());
+                // find the course
+                courseFinder courseFinder = new courseFinder(reference);
+                String[] dept = departmentItem.getDepartmentName().split("\\s+");
+                System.out.println(dept[0]+departmentItem.getSubItems()[0]);
+                Course course = courseFinder.findCourse(dept[0],departmentItem.getSubItems()[5], context); //change subitems index
+            }
+        });
+
 
     }
 

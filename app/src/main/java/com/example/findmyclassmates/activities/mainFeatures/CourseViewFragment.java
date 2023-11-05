@@ -77,7 +77,7 @@ public class CourseViewFragment extends Fragment {
         categoryList.add(new DepartmentItem("ITP - Information Technology Program", new String[]{"101", "104", "115", "116", "125", "165"}));
         categoryList.add(new DepartmentItem("DSCI - Data Science", new String[]{"351", "352", "454", "510", "525", "529"}));
 
-        DepartmentAdapter adapter = new DepartmentAdapter(categoryList);
+        DepartmentAdapter adapter = new DepartmentAdapter(categoryList, requireContext());
         recyclerView.setAdapter(adapter);
 
         return view;
