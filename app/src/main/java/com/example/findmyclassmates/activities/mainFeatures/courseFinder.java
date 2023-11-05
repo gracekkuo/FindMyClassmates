@@ -1,8 +1,7 @@
 package com.example.findmyclassmates.activities.mainFeatures;
 
 import android.content.Context;
-import android.os.Handler;
-import android.os.Looper;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -81,11 +80,25 @@ public class courseFinder {
                             }
                         });
 
+                        Button reviewsButton = view.findViewById(R.id.buttonReviews);
+                        reviewsButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent intent = new Intent(context, ReviewsActivity.class);
+                                intent.putExtra("dept", course.getDept());
+                                intent.putExtra("courseID", course.getCourseID());
+                                context.startActivity(intent);
+                            }
+                        });
+
                         Button rosterButton = view.findViewById(R.id.buttonRoster);
                         rosterButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                // TODO: direct to page with students
+                                Intent intent = new Intent(context, Roster.class);
+                                intent.putExtra("dept", course.getDept());
+                                intent.putExtra("courseID", course.getCourseID());
+                                context.startActivity(intent);
                             }
                         });
                         // Create a BottomSheetDialog
