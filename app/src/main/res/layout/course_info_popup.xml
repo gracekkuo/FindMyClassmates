@@ -66,13 +66,23 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
+    <!-- Reviews Button -->
+    <Button
+        android:id="@+id/buttonReviews"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Reviews"
+        app:layout_constraintTop_toBottomOf="@+id/buttonRegister"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
     <!-- Roster Button -->
     <Button
         android:id="@+id/buttonRoster"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Roster"
-        app:layout_constraintTop_toBottomOf="@+id/buttonRegister"
+        app:layout_constraintTop_toBottomOf="@+id/buttonReviews"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:visibility="gone"/>

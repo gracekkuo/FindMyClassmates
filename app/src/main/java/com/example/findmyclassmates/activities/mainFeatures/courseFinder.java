@@ -81,6 +81,14 @@ public class courseFinder {
                             }
                         });
 
+                        Button reviewsButton = view.findViewById(R.id.buttonReviews);
+                        reviewsButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                // TODO: direct to page with students
+                            }
+                        });
+
                         Button rosterButton = view.findViewById(R.id.buttonRoster);
                         rosterButton.setOnClickListener(new View.OnClickListener() {
                             @Override
