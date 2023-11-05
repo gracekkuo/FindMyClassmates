@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -13,7 +14,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.findmyclassmates.R;
-import com.example.findmyclassmates.models.Course;
 import com.example.findmyclassmates.models.Review;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -51,36 +51,20 @@ public class ReviewsActivity extends AppCompatActivity {
 
         context=this;
 
-        reviewAdapter = new ReviewAdapter(this, R.layout.review_item);
-        reviewsListView.setAdapter(reviewAdapter);
 
         Query query = databaseReference.orderByChild("dept").equalTo(dept);
             query.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
 
-                        //reviewAdapter = new ReviewAdapter(context, R.layout.review_item);
-                        //reviewsListView.setAdapter(reviewAdapter);
+                        reviewAdapter = new ReviewAdapter(context, R.layout.review_item);
+                        reviewsListView.setAdapter(reviewAdapter);
 
                         for (DataSnapshot reviewSnapshot : dataSnapshot.getChildren()) {
                             Review review = reviewSnapshot.getValue(Review.class);
                             if (review.getCourseID().equals(courseID)) {
 
                                 System.out.println("found matching reviews" + review.getOne());
-                                // Retrieve review data
-                                /*String dept = reviewSnapshot.child("dept").getValue(String.class);
-                                String courseID = reviewSnapshot.child("courseID").getValue(String.class);
-                                String one = reviewSnapshot.child("one").getValue(String.class);
-                                int two = reviewSnapshot.child("two").getValue(Integer.class);
-                                String three = reviewSnapshot.child("three").getValue(String.class);
-                                String four = reviewSnapshot.child("four").getValue(String.class);
-                                String five = reviewSnapshot.child("five").getValue(String.class);
-                                int upvotes = reviewSnapshot.child("upvotes").getValue(Integer.class);
-                                int downvotes = reviewSnapshot.child("downvotes").getValue(Integer.class);
-                                String user = reviewSnapshot.child("user").getValue(String.class);*/
-
-                                // Create a Review object
-                                //Review review = new Review(dept, courseID, one, two, three, four, five, upvotes, downvotes, user);
                                 reviewAdapter.add(review);
                             }
                         }
@@ -91,6 +75,23 @@ public class ReviewsActivity extends AppCompatActivity {
                         // Handle database error
                     }
                 });
+
+            Button submitReviewButton = findViewById(R.id.leaveReview);
+            submitReviewButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    // Create an Intent to start the new activity
+                    Intent intent = new Intent(ReviewsActivity.this, LeaveReviewActivity.class);
+
+                    // Pass the values as extras in the Intent
+                    intent.putExtra("dept", dept);
+                    intent.putExtra("courseID", courseID);
+
+                    // Start the new activity
+                    startActivity(intent);
+                }
+            });
     }
 
     private class ReviewAdapter extends ArrayAdapter<Review> {
@@ -127,6 +128,7 @@ public class ReviewsActivity extends AppCompatActivity {
             user.setText("- "+review.getUser());
 
             upvoteButton.setOnClickListener(new View.OnClickListener() {
+                //TODO: make sure that the database gets incremented
                 @Override
                 public void onClick(View v) {
                     int upvotes = review.getUpvotes() + 1;

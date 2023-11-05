@@ -44,7 +44,7 @@ public class addCoursesToDB {
 
     }
 
-    private static void addCourse(DatabaseReference databaseReference, String dept, String courseID, String name, String prof, String time, int units, String rosterKey, String reviewsKey) {
+    public static void addCourse(DatabaseReference databaseReference, String dept, String courseID, String name, String prof, String time, int units, String rosterKey, String reviewsKey) {
         DatabaseReference courseRef = databaseReference.child("courses");
 
         Map<String, Object> courseData = new HashMap<>();

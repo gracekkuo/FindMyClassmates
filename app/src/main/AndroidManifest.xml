@@ -16,16 +16,14 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".activities.mainFeatures.LeaveReviewActivity"
+            android:exported="true" />
+        <activity
             android:name=".activities.mainFeatures.Roster"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".activities.mainFeatures.ReviewsActivity"
-            android:exported="false" />
-        <activity
-            android:name=".activities.mainFeatures.course_list"
-            android:exported="false"
-            android:label="@string/title_activity_course_list"
-            android:theme="@style/Theme.FindMyClassmates" /> <!-- tools:replace="android:appComponentFactory" -->
+            android:exported="true" />
         <activity
             android:name=".activities.mainFeatures.TabbedFeatures"
             android:exported="true" />

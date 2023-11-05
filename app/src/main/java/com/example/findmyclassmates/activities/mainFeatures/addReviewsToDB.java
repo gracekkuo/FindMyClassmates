@@ -44,7 +44,7 @@ public class addReviewsToDB {
 
     }
 
-    private static void addReview(DatabaseReference databaseReference, String dept, String courseID, String one, int two, String three, String four, String five, int upvotes, int downvotes, String user ) {
+    public static void addReview(DatabaseReference databaseReference, String dept, String courseID, String one, int two, String three, String four, String five, int upvotes, int downvotes, String user ) {
         DatabaseReference reviewRef = databaseReference.child("reviews");
 
         //1. The workload of the class
