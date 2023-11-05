@@ -16,6 +16,7 @@ public class TabbedFeatures extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         //addCoursesToDB.main();
         //addReviewsToDB.main();
+        //FirebaseDataPopulator.main();
         setContentView(R.layout.activity_tabbed_features);
 
         TabLayout tabLayout = findViewById(R.id.tabLayout);
