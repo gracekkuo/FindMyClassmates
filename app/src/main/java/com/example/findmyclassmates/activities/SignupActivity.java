@@ -115,13 +115,21 @@ public class SignupActivity extends AppCompatActivity {
                 String studentId = studentIdText.getText().toString();
 
                 if (!isValidEmail(email)) {
-                    // Show an error message for invalid email
                     Toast.makeText(SignupActivity.this, "Invalid email address", Toast.LENGTH_SHORT).show();
                     return; // Don't proceed further
                 }
                 if (!password.equals(reenter)) {
-                    // Show an error message for invalid email
                     Toast.makeText(SignupActivity.this, "Passwords do not match", Toast.LENGTH_SHORT).show();
+                    return; // Don't proceed further
+                }
+
+                if (studentId.length() != 10){
+                    Toast.makeText(SignupActivity.this, "StudentId is less than 10 characters long.", Toast.LENGTH_SHORT).show();
+                    return; // Don't proceed further
+                }
+
+                if (!isUSCValidEmail(email)){
+                    Toast.makeText(SignupActivity.this, "Not USC email address", Toast.LENGTH_SHORT).show();
                     return; // Don't proceed further
                 }
 
@@ -170,6 +178,14 @@ public class SignupActivity extends AppCompatActivity {
     private boolean isValidEmail(String email) {
         // Regex pattern for basic email validation
         String emailPattern = "[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}";
+
+        // Check if the email matches the pattern
+        return email.matches(emailPattern);
+    }
+
+    private boolean isUSCValidEmail(String email) {
+        // Regex pattern for basic email validation and checking for the domain @usc.edu
+        String emailPattern = "[a-zA-Z0-9._-]+@usc\\.edu";
 
         // Check if the email matches the pattern
         return email.matches(emailPattern);
