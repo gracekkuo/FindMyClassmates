@@ -33,6 +33,9 @@ public class Roster extends AppCompatActivity {
     private FirebaseAuth mAuth;
     DatabaseReference mDatabase;
     private String userEmail;
+    private String firstName;
+    private String lastName;
+    private DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("Users");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,11 +69,83 @@ public class Roster extends AppCompatActivity {
                         for (Map.Entry<String, Student> entry : studentsMap.entrySet()) {
                             Map<String, Object> studentData = (Map<String, Object>) entry.getValue();
                             String email = (String) studentData.get("email");
-                            String firstName = (String) studentData.get("firstName");
-                            String lastName = (String) studentData.get("lastName");
+                            //String firstName = (String) studentData.get("firstName");
+                            //String lastName = (String) studentData.get("lastName");
+
+                            Query query = usersRef.orderByChild("email").equalTo(email);
+                            query.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    // Check if the email exists in the database
+                                    if (dataSnapshot.exists()) {
+                                        // Iterate through the results
+                                        for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
+                                            firstName=userSnapshot.child("firstName").getValue(String.class);
+                                            lastName=userSnapshot.child("lastName").getValue(String.class);
+
+                                            String print = firstName + " " + lastName + "\t\t" + email;
+
+                                            TextView textView = new TextView(context);
+                                            textView.setText(print);
+                                            textView.setTextSize(18);
+                                            textView.setPadding(0, 8, 0, 8); // Add padding for spacing
+
+                                            // Add an OnClickListener to the TextView
+                                            textView.setOnClickListener(new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View v) {
+                                                    mAuth = FirebaseAuth.getInstance();
+                                                    mDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
+                                                    FirebaseUser currentUser = mAuth.getCurrentUser();
+                                                    //set initial title and visibility
+                                                    if (currentUser != null) {
+                                                        String userID = currentUser.getUid();
+                                                        mDatabase.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
+                                                            @Override
+                                                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                                                if (dataSnapshot.exists()) {
+                                                                    // Retrieve user information from the database
+                                                                    userEmail = dataSnapshot.child("email").getValue(String.class);
+                                                                    if (userEmail.equals(email))
+                                                                    {
+                                                                        showPopup("This is you.");
+                                                                    }
+                                                                    else{
+                                                                        // Create an Intent to start a new activity
+                                                                        Intent intent = new Intent(context, ViewProfile.class);
+                                                                        // Put the email as an extra in the Intent
+                                                                        intent.putExtra("email", email);
+                                                                        // Start the new activity
+                                                                        context.startActivity(intent);
+                                                                    }
+                                                                }
+                                                            }
+                                                            @Override
+                                                            public void onCancelled(DatabaseError databaseError) {
+                                                                // Handle errors
+                                                            }
+                                                        });
+                                                    }
 
 
-                            String print = firstName + " " + lastName + "\t\t" + email;
+                                                }
+                                            });
+
+                                            // Add the TextView to the LinearLayout
+                                            textContainer.addView(textView);
+                                        }
+                                    } else {
+                                        // Handle the case where the email was not found
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+                                    // Handle database error
+                                }
+                            });
+
+                            /*String print = firstName + " " + lastName + "\t\t" + email;
 
                             TextView textView = new TextView(context);
                             textView.setText(print);
@@ -119,7 +194,7 @@ public class Roster extends AppCompatActivity {
                             });
 
                             // Add the TextView to the LinearLayout
-                            textContainer.addView(textView);
+                            textContainer.addView(textView);*/
 
                         }
 
