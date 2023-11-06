@@ -60,7 +60,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MyHolder> {
 
         User user = userlist.get(position);
 
-        friendid = String.valueOf(user.getStudentID());
+        friendid = user.getUID();
 
 
         holder.username.setText(user.getFirstName());
@@ -144,7 +144,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MyHolder> {
 
             User users = userlist.get(getAdapterPosition());
 
-            friendid = String.valueOf(users.getStudentID());
+            friendid = users.getUID();
 
             Intent intent = new Intent(context, MessageActivity.class);
             intent.putExtra("friendid", friendid);

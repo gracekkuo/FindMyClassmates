@@ -81,6 +81,8 @@ public class MessageActivity extends AppCompatActivity {
 
         friendid = getIntent().getStringExtra("friendid"); // retreive the friendid when we click on the item
 
+        System.out.println("FRIEND ID" + friendid);
+
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").child(friendid);
@@ -90,13 +92,15 @@ public class MessageActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
                 User user = snapshot.getValue(User.class);
+                System.out.println(user);
 
-                usernameonToolbar.setText("default");
-//                if(user.getFirstName() == null) {
-//                    usernameonToolbar.setText("default"); // set the text of the user on textivew in toolbar
-//                } else {
-//                    usernameonToolbar.setText(user.getFirstName()); // set the text of the user on textivew in toolbar
-//                }
+
+//                usernameonToolbar.setText("default");
+                if(user.getFirstName() == null) {
+                    usernameonToolbar.setText("default"); // set the text of the user on textivew in toolbar
+                } else {
+                    usernameonToolbar.setText(user.getFirstName()); // set the text of the user on textivew in toolbar
+                }
 
                 if (user.getProfilePicture() == null) {
 

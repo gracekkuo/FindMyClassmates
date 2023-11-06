@@ -67,7 +67,7 @@ public class UsersFragment extends Fragment {
                     firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
 
-                    if (String.valueOf(users.getStudentID()) != firebaseUser.getUid()) {
+                    if (users.getUID() != firebaseUser.getUid()) {
 
 
                         usersList.add(users);

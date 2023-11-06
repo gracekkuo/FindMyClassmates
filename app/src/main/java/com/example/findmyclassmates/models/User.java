@@ -12,6 +12,7 @@ public class User implements Serializable{
     private String profilePicture;
     private String status;
     private String studentID;
+    private String UID;
 
     // Default constructor is required for Firebase deserialization.
     public User() {
@@ -19,7 +20,7 @@ public class User implements Serializable{
     }
 
     public User(String blockedIDs, String chats, String email, String enrolledClasses,
-                String firstName, String lastName, String profilePicture, String status, String studentID) {
+                String firstName, String lastName, String profilePicture, String status, String studentID, String UID) {
         this.blockedIDs = blockedIDs;
         this.chats = chats;
         this.email = email;
@@ -29,6 +30,7 @@ public class User implements Serializable{
         this.profilePicture = profilePicture;
         this.status = status;
         this.studentID = studentID;
+        this.UID = UID;
     }
 
     // Getter and Setter methods for each field.
@@ -104,6 +106,15 @@ public class User implements Serializable{
     public void setStudentID(String studentID) {
         this.studentID = studentID;
     }
+
+    public String getUID() {
+        return UID;
+    }
+
+    public void setUID(String UID) {
+        this.UID = UID;
+    }
+
 }
 
 //public class User implements Serializable {

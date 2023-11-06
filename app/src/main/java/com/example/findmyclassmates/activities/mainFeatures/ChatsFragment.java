@@ -106,7 +106,7 @@ public class ChatsFragment extends Fragment {
                     for (Chatslist chatslist: userlist) {
 
 
-                        if (users.getStudentID() == chatslist.getId()) {
+                        if (users.getUID() == chatslist.getId()) {
 
 
                             mUsers.add(users);
