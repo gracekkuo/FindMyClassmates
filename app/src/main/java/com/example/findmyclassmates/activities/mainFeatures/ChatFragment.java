@@ -114,7 +114,7 @@ public class ChatFragment extends Fragment {
 
         viewPagerAdapter.addFragment(new ChatsFragment(), "Chats");
         viewPagerAdapter.addFragment(new UsersFragment(), "Users");
-        viewPagerAdapter.addFragment(new ChatProfileFragment(), "Profile");
+//        viewPagerAdapter.addFragment(new ChatProfileFragment(), "Profile");
 
         viewPager.setAdapter(viewPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
@@ -132,12 +132,12 @@ public class ChatFragment extends Fragment {
 
                 username.setText(user.getFirstName()); // set the text of the user on textivew in toolbar
 
-                if (user.getProfilePic() == null) {
+                if (user.getProfilePicture() == null) {
 
                     imageView.setImageResource(R.drawable.user);
                 } else {
-                    Context appContext = getParentFragment().getContext();
-                    Glide.with(appContext).load(user.getProfilePic()).into(imageView);
+                    Context appContext = getContext();
+                    Glide.with(appContext).load(user.getProfilePicture()).into(imageView);
                 }
 
             }

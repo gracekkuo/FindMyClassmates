@@ -60,19 +60,19 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MyHolder> {
 
         User user = userlist.get(position);
 
-        friendid = String.valueOf(user.getId());
+        friendid = String.valueOf(user.getStudentID());
 
 
         holder.username.setText(user.getFirstName());
 
-        if (user.getProfilePic() == null) {
+        if (user.getProfilePicture() == null) {
 
             holder.imageView.setImageResource(R.drawable.user);
 
 
         } else {
 
-            Glide.with(context).load(user.getProfilePic()).into(holder.imageView);
+            Glide.with(context).load(user.getProfilePicture()).into(holder.imageView);
         }
 
 
@@ -103,7 +103,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MyHolder> {
 
         if (isChat) {
 
-            LastMessage(String.valueOf(user.getId()), holder.last_msg);
+            LastMessage(String.valueOf(user.getStudentID()), holder.last_msg);
 
         } else {
 
@@ -144,7 +144,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MyHolder> {
 
             User users = userlist.get(getAdapterPosition());
 
-            friendid = String.valueOf(users.getId());
+            friendid = String.valueOf(users.getStudentID());
 
             Intent intent = new Intent(context, MessageActivity.class);
             intent.putExtra("friendid", friendid);

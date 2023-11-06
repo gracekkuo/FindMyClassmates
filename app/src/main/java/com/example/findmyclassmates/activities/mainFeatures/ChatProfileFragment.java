@@ -63,7 +63,7 @@ public class ChatProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view =  inflater.inflate(R.layout.fragment_profile, container, false);
+        View view =  inflater.inflate(R.layout.fragment_chat_profile, container, false);
 
         Permissions(); // for permissions
 
@@ -83,7 +83,7 @@ public class ChatProfileFragment extends Fragment {
 
                 username.setText(users.getFirstName());
 
-                if (users.getProfilePic().equals("default")) {
+                if (users.getProfilePicture() == null) {
 
                     imageView.setImageResource(R.drawable.user);
                 } else {
@@ -92,7 +92,7 @@ public class ChatProfileFragment extends Fragment {
                     // Glide.with(getActivity().getApplicationContext()).load(users.getImageURL()).into(imageView);
 
                     Context appContext = getParentFragment().getContext();
-                    Glide.with(appContext).load(users.getProfilePic()).into(imageView);
+                    Glide.with(appContext).load(users.getProfilePicture()).into(imageView);
 
 
 

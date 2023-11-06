@@ -91,17 +91,22 @@ public class MessageActivity extends AppCompatActivity {
 
                 User user = snapshot.getValue(User.class);
 
-                usernameonToolbar.setText(user.getFirstName()); // set the text of the user on textivew in toolbar
+                usernameonToolbar.setText("default");
+//                if(user.getFirstName() == null) {
+//                    usernameonToolbar.setText("default"); // set the text of the user on textivew in toolbar
+//                } else {
+//                    usernameonToolbar.setText(user.getFirstName()); // set the text of the user on textivew in toolbar
+//                }
 
-                if (user.getProfilePic().equals("default")) {
+                if (user.getProfilePicture() == null) {
 
                     imageViewOnToolbar.setImageResource(R.drawable.user);
                 } else {
 
-                    Glide.with(getApplicationContext()).load(user.getProfilePic()).into(imageViewOnToolbar);
+                    Glide.with(getApplicationContext()).load(user.getProfilePicture()).into(imageViewOnToolbar);
                 }
 
-                readMessages(myid, friendid, user.getProfilePic());
+                readMessages(myid, friendid, user.getProfilePicture());
 
 
 

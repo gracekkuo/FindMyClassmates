@@ -17,10 +17,8 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".activities.mainFeatures.ChatActivity"
-            android:exported="false"
-            android:label="@string/title_activity_chat"
-            android:theme="@style/Theme.FindMyClassmates" />
+            android:name=".activities.mainFeatures.MessageActivity"
+            android:exported="true" />
         <activity
             android:name=".activities.mainFeatures.LeaveReviewActivity"
             android:exported="true" />
