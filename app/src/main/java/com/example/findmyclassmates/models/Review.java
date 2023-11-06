@@ -11,6 +11,7 @@ public class Review {
     private int upvotes;
     private int downvotes;
     private String user;
+    private String uid;
 
     public Review() {
         // Default constructor required for Firebase database
@@ -27,6 +28,14 @@ public class Review {
         this.upvotes = upvotes;
         this.downvotes = downvotes;
         this.user = user;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
     public String getDept() {
