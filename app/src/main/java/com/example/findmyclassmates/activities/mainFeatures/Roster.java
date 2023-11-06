@@ -8,9 +8,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.findmyclassmates.R;
 import com.example.findmyclassmates.models.Student;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -27,6 +30,9 @@ public class Roster extends AppCompatActivity {
     private String dept;
     private String courseID;
     Context context;
+    private FirebaseAuth mAuth;
+    DatabaseReference mDatabase;
+    private String userEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,12 +81,40 @@ public class Roster extends AppCompatActivity {
                             textView.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    // Create an Intent to start a new activity
-                                    Intent intent = new Intent(context, ViewProfile.class);
-                                    // Put the email as an extra in the Intent
-                                    intent.putExtra("email", email);
-                                    // Start the new activity
-                                    context.startActivity(intent);
+                                    mAuth = FirebaseAuth.getInstance();
+                                    mDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
+                                    FirebaseUser currentUser = mAuth.getCurrentUser();
+                                    //set initial title and visibility
+                                    if (currentUser != null) {
+                                        String userID = currentUser.getUid();
+                                        mDatabase.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                                if (dataSnapshot.exists()) {
+                                                    // Retrieve user information from the database
+                                                    userEmail = dataSnapshot.child("email").getValue(String.class);
+                                                    if (userEmail.equals(email))
+                                                    {
+                                                        showPopup("This is you.");
+                                                    }
+                                                    else{
+                                                        // Create an Intent to start a new activity
+                                                        Intent intent = new Intent(context, ViewProfile.class);
+                                                        // Put the email as an extra in the Intent
+                                                        intent.putExtra("email", email);
+                                                        // Start the new activity
+                                                        context.startActivity(intent);
+                                                    }
+                                                }
+                                            }
+                                            @Override
+                                            public void onCancelled(DatabaseError databaseError) {
+                                                // Handle errors
+                                            }
+                                        });
+                                    }
+
+
                                 }
                             });
 
@@ -122,5 +156,9 @@ public class Roster extends AppCompatActivity {
             // Add the TextView to the LinearLayout
             textContainer.addView(textView);
         }*/
+    }
+
+    private void showPopup(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 }
