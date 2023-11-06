@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/toolbar_message"
             android:theme="@style/Base.ThemeOverlay.AppCompat.Dark.ActionBar"
-            app:popupTheme="@style/Theme.AppCompat.DayNight"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Dark"
             android:background="@color/red">
 
             <de.hdodenhof.circleimageview.CircleImageView
