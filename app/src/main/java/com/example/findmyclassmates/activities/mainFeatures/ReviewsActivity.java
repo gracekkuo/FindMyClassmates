@@ -137,14 +137,14 @@ public class ReviewsActivity extends AppCompatActivity {
                         int upvotes = review.getUpvotes() + 1;
                         review.setUpvotes(upvotes);
                         upvoteCountTextView.setText(String.valueOf(upvotes));
-                        //reviewRef.child("upvotes").setValue(review.getUpvotes());
+                        reviewRef.child("upvotes").setValue(review.getUpvotes());
                         upvoteButton.setTag("upvoted"); // Mark as upvoted
                     } else {
                         // Second click - undo upvote
                         int upvotes = review.getUpvotes() - 1;
                         review.setUpvotes(upvotes);
                         upvoteCountTextView.setText(String.valueOf(upvotes));
-                        //reviewRef.child("upvotes").setValue(review.getUpvotes());
+                        reviewRef.child("upvotes").setValue(review.getUpvotes());
                         upvoteButton.setTag(null); // Remove the upvote
                     }
                 }
@@ -153,21 +153,22 @@ public class ReviewsActivity extends AppCompatActivity {
             downvoteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    DatabaseReference reviewRef = FirebaseDatabase.getInstance().getReference("reviews").child(review.getUid());
                     if (downvoteButton.getTag() == null) {
                         // First click - increment downvotes
                         int downvotes = review.getDownvotes() + 1;
                         review.setDownvotes(downvotes);
                         downvoteCountTextView.setText(String.valueOf(downvotes));
+                        reviewRef.child("downvotes").setValue(review.getDownvotes());
                         downvoteButton.setTag("downvoted"); // Mark as downvoted
                     } else {
                         // Second click - undo downvote
                         int downvotes = review.getDownvotes() - 1;
                         review.setDownvotes(downvotes);
                         downvoteCountTextView.setText(String.valueOf(downvotes));
+                        reviewRef.child("downvotes").setValue(review.getDownvotes());
                         downvoteButton.setTag(null); // Remove the downvote
                     }
-                    //DatabaseReference reviewRef = FirebaseDatabase.getInstance().getReference("reviews").child(review.getUid());
-                    //reviewRef.child("downvotes").setValue(review.getDownvotes());
                 }
             });
             return convertView;
