@@ -6,6 +6,8 @@ public class User implements Serializable {
     private String profilePic;
     private String userID;
 
+    String status;
+
     private int id;
     String firstName;
     String lastName;
@@ -14,10 +16,23 @@ public class User implements Serializable {
     String profilePhoto;
     String password;
 
-    public User(String emailAddress, String userID, String profilePic) {
+    public User(String emailAddress, String userID, String profilePic, String status) {
         this.email = emailAddress;
         this.userID = userID;
         this.profilePic = profilePic;
+        this.status = status;
+    }
+
+    public User() {
+
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getUserID() {
