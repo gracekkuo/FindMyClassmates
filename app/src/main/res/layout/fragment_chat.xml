@@ -18,8 +18,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/toolbarmain"
-            android:theme="@style/Base.ThemeOverlay.AppCompat.Dark.ActionBar"
-            app:popupTheme="@style/Theme.AppCompat.DayNight"
+            android:theme="@style/Theme.FindMyClassmatesDefault"
+            app:popupTheme="@style/Theme.Material3.Dark"
             android:background="@color/red">
 
 
