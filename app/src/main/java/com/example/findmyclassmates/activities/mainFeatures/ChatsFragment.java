@@ -64,6 +64,7 @@ public class ChatsFragment extends Fragment {
                 for (DataSnapshot ds: snapshot.getChildren()) {
                     Chatslist chatslist = ds.getValue(Chatslist.class);
 
+
                     userlist.add(chatslist);
 
 
@@ -106,7 +107,7 @@ public class ChatsFragment extends Fragment {
                     for (Chatslist chatslist: userlist) {
 
 
-                        if (users.getUID() == chatslist.getId()) {
+                        if (users.getUID().equals(chatslist.getId())) {
 
 
                             mUsers.add(users);
