@@ -17,10 +17,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.findmyclassmates.R;
+import com.example.findmyclassmates.models.User;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.fragment.app.FragmentManager;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -87,10 +90,12 @@ public class ChatFragment extends Fragment {
     }
 
     private void setupViewPager(ViewPager viewPager) {
+//        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
-        adapter.addFragment(new ShowUserListFragment(), "Users");
-        adapter.addFragment(new ShowUserListFragment(), "Chats");
-        adapter.addFragment(new ShowUserListFragment(), "Online");
+        //  adapter.addFragment(new CuriosityModeFeatured(),"Featured");
+        adapter.addFragment(new ShowUserListFragment().newInstance(setUpUserList()), "Users");
+        adapter.addFragment(new ShowUserListFragment().newInstance(setUpChatListUsers()),"Chats");
+        adapter.addFragment(new ShowUserListFragment().newInstance(setUpOnlineUsers()),"Online");
 
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
@@ -123,5 +128,24 @@ public class ChatFragment extends Fragment {
         public CharSequence getPageTitle(int position) {
             return mFragmentTitleList.get(position);
         }
+    }
+
+    private List<User> setUpUserList(){
+        List<User> userList=new ArrayList<>();
+        userList.add(new User("ram@gmail.com","1",""));
+        userList.add(new User("shyam@gmail.com","2",""));
+        userList.add(new User("hari@gmail.com","3",""));
+        return userList;
+    }
+    private List<User> setUpChatListUsers(){
+        List<User> userList=new ArrayList<>();
+        userList.add(new User("ram@gmail.com","1",""));
+        return userList;
+    }
+    private List<User> setUpOnlineUsers(){
+        List<User> userList=new ArrayList<>();
+        userList.add(new User("ram@gmail.com","1",""));
+        userList.add(new User("hari@gmail.com","3",""));
+        return userList;
     }
 }

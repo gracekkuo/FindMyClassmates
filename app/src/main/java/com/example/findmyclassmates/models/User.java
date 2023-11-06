@@ -1,6 +1,8 @@
 package com.example.findmyclassmates.models;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
     private String profilePic;
     private String userID;
 

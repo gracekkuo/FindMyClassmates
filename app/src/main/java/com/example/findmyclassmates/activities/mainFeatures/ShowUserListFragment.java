@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import com.example.findmyclassmates.R;
 import com.example.findmyclassmates.models.User;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,34 +24,17 @@ import java.util.List;
  */
 public class ShowUserListFragment extends Fragment {
     RecyclerView showUserList;
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
+    private static final String ARG_PARAM_USER_LIST = "userList";
+    private List<User> userList;
     public ShowUserListFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ShowUserListFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ShowUserListFragment newInstance(String param1, String param2) {
+
+    public static ShowUserListFragment newInstance(List<User> userList) {
         ShowUserListFragment fragment = new ShowUserListFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putSerializable(ARG_PARAM_USER_LIST, (Serializable) userList);
         fragment.setArguments(args);
         return fragment;
     }
@@ -59,8 +43,7 @@ public class ShowUserListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            userList = (List<User>) getArguments().getSerializable(ARG_PARAM_USER_LIST);
         }
     }
 
@@ -73,13 +56,13 @@ public class ShowUserListFragment extends Fragment {
         return view;
     }
 
-    private List<User> setUpUserList(){
-        List<User> userList=new ArrayList<>();
-        userList.add(new User("ram@gmail.com","1",""));
-        userList.add(new User("shyam@gmail.com","1",""));
-        userList.add(new User("hari@gmail.com","1",""));
-        return userList;
-    }
+//    private List<User> setUpUserList(){
+//        List<User> userList=new ArrayList<>();
+//        userList.add(new User("ram@gmail.com","1",""));
+//        userList.add(new User("shyam@gmail.com","1",""));
+//        userList.add(new User("hari@gmail.com","1",""));
+//        return userList;
+//    }
 
     private void defineView(View view) {
         showUserList = view.findViewById(R.id.show_user_List);
@@ -87,7 +70,7 @@ public class ShowUserListFragment extends Fragment {
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         showUserList.setLayoutManager(layoutManager);
 
-        UserListAdapter listAdapter=new UserListAdapter(setUpUserList());
+        UserListAdapter listAdapter=new UserListAdapter(userList);
         showUserList.setAdapter(listAdapter);
     }
 
