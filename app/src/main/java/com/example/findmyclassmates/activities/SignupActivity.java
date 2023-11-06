@@ -10,6 +10,12 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.findmyclassmates.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class SignupActivity extends AppCompatActivity {
 
@@ -18,6 +24,10 @@ public class SignupActivity extends AppCompatActivity {
     private EditText emailEditText;
     private EditText passwordEditText;
     private EditText reenterPassEditText;
+    private EditText studentIdText;
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private DatabaseReference usersRef;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +39,10 @@ public class SignupActivity extends AppCompatActivity {
         emailEditText = findViewById(R.id.uscEmailEditText);
         passwordEditText = findViewById(R.id.passwordEditText);
         reenterPassEditText = findViewById(R.id.reenterPasswordEditText);
+        studentIdText = findViewById(R.id.studentIdEditText);
 
+
+        usersRef = FirebaseDatabase.getInstance().getReference().child("Users");
         Button signupButton = findViewById(R.id.signupButton);
         signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -40,6 +53,7 @@ public class SignupActivity extends AppCompatActivity {
                 String email = emailEditText.getText().toString();
                 String password = passwordEditText.getText().toString();
                 String reenter = reenterPassEditText.getText().toString();
+                String studentId = studentIdText.getText().toString();
 
                 if (!isValidEmail(email)) {
                     // Show an error message for invalid email
@@ -54,15 +68,47 @@ public class SignupActivity extends AppCompatActivity {
 
                 //insert into db, if valid return 200
 
+                System.out.println("validated input ");
 
-                int responseCode = 200;
-                if (responseCode == 200) {
-                    // Start the MainActivity
-                    startActivity(new Intent(SignupActivity.this, MainActivity.class));
-                } else {
-                    // Show an error for unsuccessful login
-                    Toast.makeText(SignupActivity.this, "Sign up failed. Please try again.", Toast.LENGTH_SHORT).show();
-                }
+                mAuth.createUserWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(SignupActivity.this, task -> {
+                            if (task.isSuccessful()) {
+                                // Sign up successful, update user profile
+                                FirebaseUser user = mAuth.getCurrentUser();
+                                System.out.println("sign up sucessful");
+
+                                if (user != null) {
+                                    // Update user profile
+                                    user.updateProfile(new UserProfileChangeRequest.Builder()
+                                                    .setDisplayName(firstName + " " + lastName)
+                                                    .build())
+                                            .addOnCompleteListener(task1 -> {
+                                                if (task1.isSuccessful()) {
+                                                    // Profile updated successfully
+                                                    // Write user information to the Realtime Database
+                                                    writeUserDataToDatabase(user.getUid(), studentId, firstName, lastName, email);
+                                                    // Redirect to the main activity
+                                                    startActivity(new Intent(SignupActivity.this, MainActivity.class));
+                                                }
+                                            });
+                                }
+                                /*UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                        .setDisplayName(firstName + " " + lastName)
+                                        .build();
+
+                                user.updateProfile(profileUpdates)
+                                        .addOnCompleteListener(task1 -> {
+                                            if (task1.isSuccessful()) {
+                                                // Profile updated
+                                                startActivity(new Intent(SignupActivity.this, MainActivity.class));
+                                            }
+                                        });
+                                 */
+                            } else {
+                                // Sign up failed
+                                Toast.makeText(SignupActivity.this, "Sign up failed. Please try again.", Toast.LENGTH_SHORT).show();
+                            }
+                        });
             }
         });
     }
@@ -72,5 +118,16 @@ public class SignupActivity extends AppCompatActivity {
 
         // Check if the email matches the pattern
         return email.matches(emailPattern);
+    }
+
+    private void writeUserDataToDatabase(String userID, String studentId, String firstName, String lastName, String email) {
+        usersRef.child(userID).child("firstName").setValue(firstName);
+        usersRef.child(userID).child("lastName").setValue(lastName);
+        usersRef.child(userID).child("studentID").setValue(studentId);
+        usersRef.child(userID).child("email").setValue(email);
+        usersRef.child(userID).child("profilePicture").setValue("");
+        usersRef.child(userID).child("enrolledClasses").setValue("");
+        usersRef.child(userID).child("blockedIDs").setValue("");
+        usersRef.child(userID).child("chats").setValue("");
     }
 }
