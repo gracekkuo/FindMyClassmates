@@ -16,6 +16,12 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.findmyclassmates.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import com.example.findmyclassmates.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -42,6 +48,10 @@ public class SignupActivity extends AppCompatActivity {
     private EditText emailEditText;
     private EditText passwordEditText;
     private EditText reenterPassEditText;
+    private EditText studentIdText;
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private DatabaseReference usersRef;
+
 
 //    new vars
     EditText emailEt,passwordEt;
@@ -62,46 +72,78 @@ public class SignupActivity extends AppCompatActivity {
         emailEditText = findViewById(R.id.uscEmailEditText);
         passwordEditText = findViewById(R.id.passwordEditText);
         reenterPassEditText = findViewById(R.id.reenterPasswordEditText);
+        studentIdText = findViewById(R.id.studentIdEditText);
 
-        initView();
-        defineView();
-        addCLicklistener();
 
-//        Button signupButton = findViewById(R.id.signupButton);
-//        signupButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                // Get the user's input from the EditText fields
-//                String firstName = firstNameText.getText().toString();
-//                String lastName = lastNameText.getText().toString();
-//                String email = emailEditText.getText().toString();
-//                String password = passwordEditText.getText().toString();
-//                String reenter = reenterPassEditText.getText().toString();
-//
-//                if (!isValidEmail(email)) {
-//                    // Show an error message for invalid email
-//                    Toast.makeText(SignupActivity.this, "Invalid email address", Toast.LENGTH_SHORT).show();
-//                    return; // Don't proceed further
-//                }
-//                if (!password.equals(reenter)) {
-//                    // Show an error message for invalid email
-//                    Toast.makeText(SignupActivity.this, "Passwords do not match", Toast.LENGTH_SHORT).show();
-//                    return; // Don't proceed further
-//                }
-//
-//                //insert into db, if valid return 200
-//
-//
-//                int responseCode = 200;
-//                if (responseCode == 200) {
-//                    // Start the MainActivity
-//                    startActivity(new Intent(SignupActivity.this, MainActivity.class));
-//                } else {
-//                    // Show an error for unsuccessful login
-//                    Toast.makeText(SignupActivity.this, "Sign up failed. Please try again.", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        });
+        usersRef = FirebaseDatabase.getInstance().getReference().child("Users");
+        Button signupButton = findViewById(R.id.signupButton);
+        signupButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Get the user's input from the EditText fields
+                String firstName = firstNameText.getText().toString();
+                String lastName = lastNameText.getText().toString();
+                String email = emailEditText.getText().toString();
+                String password = passwordEditText.getText().toString();
+                String reenter = reenterPassEditText.getText().toString();
+                String studentId = studentIdText.getText().toString();
+
+                if (!isValidEmail(email)) {
+                    // Show an error message for invalid email
+                    Toast.makeText(SignupActivity.this, "Invalid email address", Toast.LENGTH_SHORT).show();
+                    return; // Don't proceed further
+                }
+                if (!password.equals(reenter)) {
+                    // Show an error message for invalid email
+                    Toast.makeText(SignupActivity.this, "Passwords do not match", Toast.LENGTH_SHORT).show();
+                    return; // Don't proceed further
+                }
+
+                //insert into db, if valid return 200
+
+                System.out.println("validated input ");
+
+                mAuth.createUserWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(SignupActivity.this, task -> {
+                            if (task.isSuccessful()) {
+                                // Sign up successful, update user profile
+                                FirebaseUser user = mAuth.getCurrentUser();
+                                System.out.println("sign up sucessful");
+
+                                if (user != null) {
+                                    // Update user profile
+                                    user.updateProfile(new UserProfileChangeRequest.Builder()
+                                                    .setDisplayName(firstName + " " + lastName)
+                                                    .build())
+                                            .addOnCompleteListener(task1 -> {
+                                                if (task1.isSuccessful()) {
+                                                    // Profile updated successfully
+                                                    // Write user information to the Realtime Database
+                                                    writeUserDataToDatabase(user.getUid(), studentId, firstName, lastName, email);
+                                                    // Redirect to the main activity
+                                                    startActivity(new Intent(SignupActivity.this, MainActivity.class));
+                                                }
+                                            });
+                                }
+                                /*UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                        .setDisplayName(firstName + " " + lastName)
+                                        .build();
+
+                                user.updateProfile(profileUpdates)
+                                        .addOnCompleteListener(task1 -> {
+                                            if (task1.isSuccessful()) {
+                                                // Profile updated
+                                                startActivity(new Intent(SignupActivity.this, MainActivity.class));
+                                            }
+                                        });
+                                 */
+                            } else {
+                                // Sign up failed
+                                Toast.makeText(SignupActivity.this, "Sign up failed. Please try again.", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+            }
+        });
     }
     private boolean isValidEmail(String email) {
         // Regex pattern for basic email validation
@@ -111,111 +153,14 @@ public class SignupActivity extends AppCompatActivity {
         return email.matches(emailPattern);
     }
 
-    private void defineView(){
-        emailEt=findViewById(R.id.uscEmailEditText);
-        passwordEt=findViewById(R.id.passwordEditText);
-        signUp=findViewById(R.id.signupButton);
-        showUserProfile=findViewById(R.id.show_user_profile);
-
+    private void writeUserDataToDatabase(String userID, String studentId, String firstName, String lastName, String email) {
+        usersRef.child(userID).child("firstName").setValue(firstName);
+        usersRef.child(userID).child("lastName").setValue(lastName);
+        usersRef.child(userID).child("studentID").setValue(studentId);
+        usersRef.child(userID).child("email").setValue(email);
+        usersRef.child(userID).child("profilePicture").setValue("");
+        usersRef.child(userID).child("enrolledClasses").setValue("");
+        usersRef.child(userID).child("blockedIDs").setValue("");
+        usersRef.child(userID).child("chats").setValue("");
     }
-    private void initView(){
-        auth=FirebaseAuth.getInstance();
-    }
-
-    private boolean validate(){
-        boolean isValid=false;
-        email=emailEt.getText().toString();
-        password=passwordEt.getText().toString();
-        if(TextUtils.isEmpty(email))
-            emailEt.setError("Required");
-        else if(TextUtils.isEmpty(password))
-            passwordEt.setError("Required");
-        else
-            isValid=true;
-        return isValid;
-    }
-    private void addCLicklistener(){
-        signUp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(validate()) {
-                    registerUserToDatabse();
-                    startActivity(new Intent(SignupActivity.this, MainActivity.class));
-                }
-            }
-        });
-
-//        for PFP
-        showUserProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent();
-                    //show only images, no videos or anything else
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                    //always show the choose (if there are multiple options available)
-                startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
-            }
-        });
-    }
-    private void registerUserToDatabse(){
-        auth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(SignupActivity.this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                Toast.makeText(SignupActivity.this, "succesfully created user::email is:"+ task.getResult().getUser().getEmail(), Toast.LENGTH_SHORT).show();
-
-                addUserInDatabse(task.getResult().getUser());
-            }
-        });
-
-    }
-
-    private void addUserInDatabse(FirebaseUser firebaseUser){
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        byte[] data = bytes.toByteArray();
-
-        // NEED HELP GETTING PROFILE PICTURE UPLOAD WORKING
-
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-        DatabaseReference userRef = databaseReference.child("users");
-
-        Map<String, Object> userData = new HashMap<>();
-        userData.put("User ID", firebaseUser.getUid().toString());
-        userData.put("first name", firstNameText.getText().toString());
-        userData.put("last name", lastNameText.getText().toString());
-        userData.put("email", emailEditText.getText().toString());
-        userData.put("password", passwordEditText.getText().toString());
-
-
-        System.out.println("here");
-        userRef.push().setValue(userData, (error, ref) -> {
-            if (error == null) {
-                System.out.println("user added successfully");
-            } else {
-                System.err.println("user addition failed: " + error.getMessage());
-            }
-        });
-    }
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
-
-            uri = data.getData();
-
-            try {
-                bitmap = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), uri);
-                // Log.d(TAG, String.valueOf(bitmap));
-                Toast.makeText(this, "hey you selected image" + bitmap, Toast.LENGTH_SHORT).show();
-                showUserProfile.setImageBitmap(bitmap);
-                //ImageView imageView = (ImageView) findViewById(R.id.imageView);
-                //imageView.setImageBitmap(bitmap);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
 }
