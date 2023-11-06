@@ -1,5 +1,7 @@
 package com.example.findmyclassmates.activities;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -16,6 +18,8 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.findmyclassmates.R;
+import com.example.findmyclassmates.activities.mainFeatures.CourseViewFragment;
+import com.example.findmyclassmates.activities.mainFeatures.TabbedFeatures;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseUser;
@@ -51,22 +55,17 @@ public class SignupActivity extends AppCompatActivity {
     private EditText studentIdText;
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private DatabaseReference usersRef;
-
-
-//    new vars
-    EditText emailEt,passwordEt;
-    Button signUp;
-    String email,password;
-    FirebaseAuth auth;
-    ImageView showUserProfile;
-    private final Integer PICK_IMAGE_REQUEST=1;
-    Bitmap bitmap;
-    Uri uri;
+    private FirebaseStorage storage;
+    private StorageReference storageReference;
+    private ImageView profileImageView;
+    private boolean uploadImage;
+    private Uri uri;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
+        uploadImage = false;
         firstNameText = findViewById(R.id.firstNameEditText);
         lastNameText = findViewById(R.id.lastNameEditText);
         emailEditText = findViewById(R.id.uscEmailEditText);
@@ -74,7 +73,34 @@ public class SignupActivity extends AppCompatActivity {
         reenterPassEditText = findViewById(R.id.reenterPasswordEditText);
         studentIdText = findViewById(R.id.studentIdEditText);
 
+        Button uploadPictureButton = findViewById(R.id.uploadPictureButton);
 
+
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
+        profileImageView = findViewById(R.id.show_user_profile); // Reference to your ImageView
+        ActivityResultLauncher<Intent> mGetContent = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+            if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                uri = result.getData().getData();
+                if (uri != null) {
+                    try {
+                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                        profileImageView.setImageBitmap(bitmap);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+
+        uploadPictureButton.setOnClickListener(v -> {
+            System.out.println("clicked");
+            Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            galleryIntent.setType("image/*");
+            mGetContent.launch(galleryIntent);
+        });
+
+        //put rest of information into user object
         usersRef = FirebaseDatabase.getInstance().getReference().child("Users");
         Button signupButton = findViewById(R.id.signupButton);
         signupButton.setOnClickListener(new View.OnClickListener() {
@@ -99,10 +125,6 @@ public class SignupActivity extends AppCompatActivity {
                     return; // Don't proceed further
                 }
 
-                //insert into db, if valid return 200
-
-                System.out.println("validated input ");
-
                 mAuth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(SignupActivity.this, task -> {
                             if (task.isSuccessful()) {
@@ -120,8 +142,8 @@ public class SignupActivity extends AppCompatActivity {
                                                     // Profile updated successfully
                                                     // Write user information to the Realtime Database
                                                     writeUserDataToDatabase(user.getUid(), studentId, firstName, lastName, email);
-                                                    // Redirect to the main activity
-                                                    startActivity(new Intent(SignupActivity.this, MainActivity.class));
+                                                    // Redirect to the course view activity
+                                                    startActivity(new Intent(SignupActivity.this, TabbedFeatures.class));
                                                 }
                                             });
                                 }
@@ -158,9 +180,37 @@ public class SignupActivity extends AppCompatActivity {
         usersRef.child(userID).child("lastName").setValue(lastName);
         usersRef.child(userID).child("studentID").setValue(studentId);
         usersRef.child(userID).child("email").setValue(email);
-        usersRef.child(userID).child("profilePicture").setValue("");
         usersRef.child(userID).child("enrolledClasses").setValue("");
         usersRef.child(userID).child("blockedIDs").setValue("");
         usersRef.child(userID).child("chats").setValue("");
+        uploadImageToFirebaseStorage(uri);
+    }
+    private void uploadImageToFirebaseStorage(Uri imageUri) {
+        StorageReference ref = storageReference.child("profile_pictures/" + mAuth.getCurrentUser().getUid());
+        ref.putFile(imageUri)
+                .addOnSuccessListener(taskSnapshot -> {
+                    // Get the uploaded image URL
+                    ref.getDownloadUrl().addOnSuccessListener(uri -> {
+                        // Save the image URL to the database
+                        String imageUrl = uri.toString();
+                        saveImageUrlToDatabase(imageUrl);
+                    });
+                })
+                .addOnFailureListener(e -> Toast.makeText(SignupActivity.this, "Failed to upload image.", Toast.LENGTH_SHORT).show());
+    }
+
+    private void saveImageUrlToDatabase(String imageUrl) {
+        FirebaseUser user = mAuth.getCurrentUser();
+        System.out.println("here?");
+        if (user != null) {
+            usersRef.child(user.getUid()).child("profilePicture").setValue(imageUrl)
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            System.out.println("you uploaded image");
+                        } else {
+                            Toast.makeText(SignupActivity.this, "Failed to save image URL to the database.", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        }
     }
 }
