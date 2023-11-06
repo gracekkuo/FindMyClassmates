@@ -24,6 +24,7 @@ public class ViewProfile extends AppCompatActivity {
     private TextView textViewLastName;
     private TextView textViewStudentID;
     private Button buttonChat;
+    private Button buttonBlock;
     private DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("Users");
 
     @Override
@@ -38,6 +39,8 @@ public class ViewProfile extends AppCompatActivity {
         textViewLastName = findViewById(R.id.textViewLastName);
         textViewStudentID = findViewById(R.id.textViewStudentID);
         buttonChat = findViewById(R.id.buttonChat);
+        buttonBlock = findViewById(R.id.buttonBlock);
+
 
         // Create a query to find the user with the specified email
         Query query = usersRef.orderByChild("email").equalTo(email);
@@ -58,6 +61,15 @@ public class ViewProfile extends AppCompatActivity {
                         textViewFirstName.setText(user.getFirstName());
                         textViewLastName.setText(user.getLastName());
                         textViewStudentID.setText(user.getStudentID());
+
+                        String blockedIDs=userSnapshot.child("blockedIDs").getValue(String.class);
+                        if(blockedIDs.contains(","+email))
+                        {
+                            buttonBlock.setText("UnBlock User");
+                        }
+                        else {
+                            buttonBlock.setText("Block User");
+                        }
                     }
                 } else {
                     // Handle the case where the email was not found
@@ -85,7 +97,46 @@ public class ViewProfile extends AppCompatActivity {
             }
         });
 
+        buttonBlock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Query query = usersRef.orderByChild("email").equalTo(email);
+                //System.out.println(email);
+                query.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        //System.out.println("got snapshot");
+                        // Check if the email exists in the database
+                        if (dataSnapshot.exists()) {
+                            //System.out.println("snapshot exists");
+                            // Iterate through the results
+                            for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
+                                // Deserialize the user object
+                                User user = userSnapshot.getValue(User.class);
+                                // Now you have the user object
+                                String blockedIDs=userSnapshot.child("blockedIDs").getValue(String.class);
+                                if(blockedIDs.contains(","+email))
+                                {
+                                    buttonBlock.setText("Block User");
+                                    userSnapshot.child("blockedIDs").getRef().setValue(blockedIDs.replaceAll(","+email, ""));
+                                }
+                                else {
+                                    buttonBlock.setText("Unblock User");
+                                    userSnapshot.child("blockedIDs").getRef().setValue(blockedIDs += "," + email);
+                                }
+                            }
+                        } else {
+                            // Handle the case where the email was not found
+                        }
+                    }
 
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        // Handle database error
+                    }
+                });
+            }
+        });
 
     }
 }
