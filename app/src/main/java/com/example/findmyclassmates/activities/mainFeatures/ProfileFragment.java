@@ -45,6 +45,7 @@ public class ProfileFragment extends Fragment {
     private TextView invalidStudentID;
     DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
+    FirebaseUser currentUser;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -97,7 +98,7 @@ public class ProfileFragment extends Fragment {
         mDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
 
 
-        FirebaseUser currentUser = mAuth.getCurrentUser();
+        currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
             String userID = currentUser.getUid();
             mDatabase.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -213,6 +214,27 @@ public class ProfileFragment extends Fragment {
         //make buttons invisible
         buttonSave.setVisibility(View.INVISIBLE);
         buttonCancel.setVisibility(View.INVISIBLE);
+
+        //save changes in firebase
+        if (currentUser != null) {
+            String userID = currentUser.getUid();
+            mDatabase.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        // Retrieve user information from the database
+                        dataSnapshot.child("firstName").getRef().setValue(textViewFirstName.getText().toString());
+                        dataSnapshot.child("lastName").getRef().setValue(textViewLastName.getText().toString());
+                        dataSnapshot.child("studentID").getRef().setValue(textViewStudentID.getText().toString());
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    // Handle errors
+                }
+            });
+        }
     }
 
     public void cancelChanges() {
