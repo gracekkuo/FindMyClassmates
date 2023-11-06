@@ -12,6 +12,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.findmyclassmates.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -36,6 +43,8 @@ public class ProfileFragment extends Fragment {
     private Button buttonCancel;
     private TextView invalidBlank;
     private TextView invalidStudentID;
+    DatabaseReference mDatabase;
+    private FirebaseAuth mAuth;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -86,7 +95,35 @@ public class ProfileFragment extends Fragment {
         invalidBlank = view.findViewById(R.id.invalidBlank);
         invalidStudentID = view.findViewById(R.id.invalidStudentID);
 
+        mAuth = FirebaseAuth.getInstance();
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
 
+
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
+            String userID = currentUser.getUid();
+            mDatabase.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        // Retrieve user information from the database
+                        String firstName = dataSnapshot.child("firstName").getValue(String.class);
+                        String lastName = dataSnapshot.child("lastName").getValue(String.class);
+                        String studentID = dataSnapshot.child("studentID").getValue(String.class);
+
+                        // Set retrieved data to the respective views
+                        textViewFirstName.setText(firstName);
+                        textViewLastName.setText(lastName);
+                        textViewStudentID.setText(studentID);
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    // Handle errors
+                }
+            });
+        }
 
         // Set click listener for the TextView to enable editing
         textViewFirstName.setOnClickListener(v -> enableEditing(textViewFirstName, editTextFirstName));
@@ -104,6 +141,7 @@ public class ProfileFragment extends Fragment {
         return view;
         //return inflater.inflate(R.layout.fragment_profile, container, false);
     }
+
 
     private void enableEditing(TextView textView, EditText editText) {
         textView.setVisibility(View.GONE);
