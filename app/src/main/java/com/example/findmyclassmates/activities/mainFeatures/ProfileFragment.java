@@ -1,5 +1,6 @@
 package com.example.findmyclassmates.activities.mainFeatures;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -12,6 +13,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.findmyclassmates.R;
+import com.example.findmyclassmates.activities.LoginActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -41,6 +43,7 @@ public class ProfileFragment extends Fragment {
     private EditText editTextStudentID;
     private Button buttonSave;
     private Button buttonCancel;
+    private Button buttonLogout;
     private TextView invalidBlank;
     private TextView invalidStudentID;
     DatabaseReference mDatabase;
@@ -92,6 +95,7 @@ public class ProfileFragment extends Fragment {
         editTextStudentID = view.findViewById(R.id.editTextStudentID);
         buttonSave = view.findViewById(R.id.buttonSave);
         buttonCancel = view.findViewById(R.id.buttonCancel);
+        buttonLogout = view.findViewById(R.id.buttonLogout);
         invalidBlank = view.findViewById(R.id.invalidBlank);
         invalidStudentID = view.findViewById(R.id.invalidStudentID);
 
@@ -137,9 +141,21 @@ public class ProfileFragment extends Fragment {
         buttonSave.setVisibility(View.GONE);
         buttonCancel.setVisibility(View.GONE);
 
+        buttonLogout.setOnClickListener(v -> logoutUser());
+
 
         return view;
         //return inflater.inflate(R.layout.fragment_profile, container, false);
+    }
+
+    private void logoutUser() {
+        FirebaseAuth.getInstance().signOut();
+        if (getActivity() != null) {
+            Intent intent = new Intent(getActivity(), LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            getActivity().finish(); // Optional: Finish the current activity
+        }
     }
 
 

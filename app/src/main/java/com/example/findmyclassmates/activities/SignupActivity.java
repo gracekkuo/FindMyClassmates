@@ -183,6 +183,8 @@ public class SignupActivity extends AppCompatActivity {
         usersRef.child(userID).child("enrolledClasses").setValue("");
         usersRef.child(userID).child("blockedIDs").setValue("");
         usersRef.child(userID).child("chats").setValue("");
+        usersRef.child(userID).child("UID").setValue(userID);
+
         uploadImageToFirebaseStorage(uri);
     }
     private void uploadImageToFirebaseStorage(Uri imageUri) {
