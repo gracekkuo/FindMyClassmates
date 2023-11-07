@@ -58,12 +58,11 @@ Once inside the app, you will be directed to the Classes Tab.
   -The logout button will redirect you to the login screen.
   
 
-=====================================================================================
+-------------------------------------------------------
 Emulator Device: Google Pixel 2
 
 API version: 24
-=====================================================================================
-
+-------------------------------------------------------
 
 KNOWN BUGS: 
 
