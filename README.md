@@ -58,12 +58,22 @@ Once inside the app, you will be directed to the Classes Tab.
   -The logout button will redirect you to the login screen.
   
 
+
 Emulator Device: Google Pixel 2
+
 API version: 24
 
+
+
 KNOWN BUGS: 
+
 Upvotes/Downvotes can happen infinitely
+
 Register drop and register a class it doesn’t register in the student table (Firebase)
+
 App will crash during signup if a profile photo is not submitted
+
 Editing a review is currently not working
+
 Push notifications is currently not working
+
