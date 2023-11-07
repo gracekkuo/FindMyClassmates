@@ -63,7 +63,7 @@ public class ReviewsActivity extends AppCompatActivity {
                         for (DataSnapshot reviewSnapshot : dataSnapshot.getChildren()) {
                             Review review = reviewSnapshot.getValue(Review.class);
                             if (review.getCourseID().equals(courseID)) {
-
+                                review.setUid(reviewSnapshot.getKey());
                                 System.out.println("found matching reviews" + review.getOne());
                                 reviewAdapter.add(review);
                             }
@@ -131,21 +131,46 @@ public class ReviewsActivity extends AppCompatActivity {
                 //TODO: make sure that the database gets incremented
                 @Override
                 public void onClick(View v) {
-                    int upvotes = review.getUpvotes() + 1;
-                    review.setUpvotes(upvotes);
-                    upvoteCountTextView.setText(String.valueOf(upvotes));
+                    DatabaseReference reviewRef = FirebaseDatabase.getInstance().getReference("reviews").child(review.getUid());
+                    if (upvoteButton.getTag() == null) {
+                        // First click - increment upvotes
+                        int upvotes = review.getUpvotes() + 1;
+                        review.setUpvotes(upvotes);
+                        upvoteCountTextView.setText(String.valueOf(upvotes));
+                        reviewRef.child("upvotes").setValue(review.getUpvotes());
+                        upvoteButton.setTag("upvoted"); // Mark as upvoted
+                    } else {
+                        // Second click - undo upvote
+                        int upvotes = review.getUpvotes() - 1;
+                        review.setUpvotes(upvotes);
+                        upvoteCountTextView.setText(String.valueOf(upvotes));
+                        reviewRef.child("upvotes").setValue(review.getUpvotes());
+                        upvoteButton.setTag(null); // Remove the upvote
+                    }
                 }
             });
 
             downvoteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int downvotes = review.getDownvotes() + 1;
-                    review.setDownvotes(downvotes);
-                    downvoteCountTextView.setText(String.valueOf(downvotes));
+                    DatabaseReference reviewRef = FirebaseDatabase.getInstance().getReference("reviews").child(review.getUid());
+                    if (downvoteButton.getTag() == null) {
+                        // First click - increment downvotes
+                        int downvotes = review.getDownvotes() + 1;
+                        review.setDownvotes(downvotes);
+                        downvoteCountTextView.setText(String.valueOf(downvotes));
+                        reviewRef.child("downvotes").setValue(review.getDownvotes());
+                        downvoteButton.setTag("downvoted"); // Mark as downvoted
+                    } else {
+                        // Second click - undo downvote
+                        int downvotes = review.getDownvotes() - 1;
+                        review.setDownvotes(downvotes);
+                        downvoteCountTextView.setText(String.valueOf(downvotes));
+                        reviewRef.child("downvotes").setValue(review.getDownvotes());
+                        downvoteButton.setTag(null); // Remove the downvote
+                    }
                 }
             });
-
             return convertView;
         }
     }

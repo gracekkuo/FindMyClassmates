@@ -1,6 +1,7 @@
 package com.example.findmyclassmates.activities.mainFeatures;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.os.Bundle;
@@ -38,5 +39,8 @@ public class TabbedFeatures extends AppCompatActivity {
                     break;
             }
         }).attach();
+
     }
+
+
 }

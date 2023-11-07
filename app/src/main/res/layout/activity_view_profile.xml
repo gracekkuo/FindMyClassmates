@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/fragmentContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp"
-    tools:context=".activities.mainFeatures.ProfileFragment">
+    tools:context=".activities.mainFeatures.ViewProfile">
 
     <!-- TODO: Update blank fragment layout -->
     <LinearLayout
@@ -15,14 +14,6 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:padding="16dp">
-
-        <ImageView
-            android:id="@+id/show_users_profile"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:src="@drawable/ic_add_profile"
-
-            />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -39,15 +30,8 @@
                 android:id="@+id/textViewFirstName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:clickable="true"
                 android:layout_gravity="center_vertical"/>
 
-            <EditText
-                android:id="@+id/editTextFirstName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="First Name"
-                android:visibility="invisible"/>
         </LinearLayout>
 
         <LinearLayout
@@ -65,15 +49,8 @@
                 android:id="@+id/textViewLastName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:clickable="true"
                 android:layout_gravity="center_vertical"/>
 
-            <EditText
-                android:id="@+id/editTextLastName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="First Name"
-                android:visibility="invisible"/>
         </LinearLayout>
 
         <LinearLayout
@@ -91,15 +68,7 @@
                 android:id="@+id/textViewStudentID"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:clickable="true"
                 android:layout_gravity="center_vertical"/>
-
-            <EditText
-                android:id="@+id/editTextStudentID"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Student ID"
-                android:visibility="invisible"/>
 
         </LinearLayout>
 
@@ -114,53 +83,19 @@
                 android:text="Status: Student"
                 android:layout_gravity="center_vertical"/>
 
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="user type"
-                android:visibility="invisible"/>
         </LinearLayout>
         <!-- Add more TextViews for other user info (Last Name, Student ID, Email, Profession, etc.) -->
 
         <Button
-            android:id="@+id/buttonSave"
+            android:id="@+id/buttonChat"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="Save Changes"/>
-
+            android:text="Open Chat"/>
         <Button
-            android:id="@+id/buttonCancel"
+            android:id="@+id/buttonBlock"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="Cancel"/>
-
-        <Button
-            android:id="@+id/buttonLogout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Logout"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="16dp" />
-
-        <TextView
-            android:id="@+id/invalidBlank"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="*Field cannot be left blank, changes not saved."
-            android:layout_gravity="center_vertical"
-            android:visibility="gone"/>
-        <TextView
-            android:id="@+id/invalidStudentID"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="*Student ID must be 10 numerical digits, changes not saved."
-            android:layout_gravity="center_vertical"
-            android:visibility="gone"/>
-
+            android:text="Block User"/>
     </LinearLayout>
-
-
 
 </FrameLayout>
