@@ -113,15 +113,54 @@ public class ViewProfile extends AppCompatActivity {
         buttonChat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Create an Intent to start the new activity
-                //TODO: this needs to be fixed to go to the right place
-                Intent chatIntent = new Intent(ViewProfile.this, TabbedFeatures.class);
+                Query query = usersRef.orderByChild("email").equalTo(email);
+                query.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.exists()) {
+                            for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
+                                String chatUID = userSnapshot.child("UID").getValue(String.class);
 
-                // Pass the email as an extra in the Intent
-                chatIntent.putExtra("email", email);
+                                String currentUID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                                DatabaseReference currentUserRef = usersRef.child(currentUID);
+                                currentUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot userSnapshot) {
+                                        if (userSnapshot.exists()) {
+                                            String existingChatString = userSnapshot.child("chatString").getValue(String.class);
+                                            if (existingChatString!=null) {
+                                                currentUserRef.child("chatString").setValue(existingChatString + "," + chatUID);
+                                            }
+                                            else {
+                                                currentUserRef.child("chatString").setValue("," + chatUID);
 
-                // Start the new activity
-                startActivity(chatIntent);
+                                            }
+
+                                            // Now, proceed to start the chat
+                                            Intent chatIntent = new Intent(ViewProfile.this, MessageActivity.class);
+                                            chatIntent.putExtra("friendid", chatUID);
+                                            startActivity(chatIntent);
+                                        }
+                                    }
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+                                        // Handle database error
+                                        // If onCancelled method is required, implement it here
+                                    }
+                                });
+                            }
+                        } else {
+                            // Handle the case where the email was not found
+                        }
+
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        // Handle database error
+                    }
+                });
             }
         });
 

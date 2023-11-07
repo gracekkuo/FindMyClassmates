@@ -17,10 +17,9 @@
         android:padding="16dp">
 
         <ImageView
-            android:id="@+id/show_users_profile"
+            android:id="@+id/profile_image_display"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:src="@drawable/ic_add_profile"
 
             />
 
