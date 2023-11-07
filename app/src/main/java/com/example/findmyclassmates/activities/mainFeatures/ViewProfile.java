@@ -1,5 +1,7 @@
 package com.example.findmyclassmates.activities.mainFeatures;
 
+import static androidx.test.InstrumentationRegistry.getContext;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -7,8 +9,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.findmyclassmates.R;
 import com.example.findmyclassmates.models.User;
 import com.google.firebase.auth.FirebaseAuth;
@@ -25,6 +29,7 @@ public class ViewProfile extends AppCompatActivity {
     private TextView textViewFirstName;
     private TextView textViewLastName;
     private TextView textViewStudentID;
+    private ImageView profileImageView;
     private Button buttonChat;
     private Button buttonBlock;
     private DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("Users");
@@ -40,12 +45,12 @@ public class ViewProfile extends AppCompatActivity {
         Intent intent = getIntent();
         String email = intent.getStringExtra("email");
 
+        profileImageView = findViewById(R.id.profile_image_display_view);
         textViewFirstName = findViewById(R.id.textViewFirstName);
         textViewLastName = findViewById(R.id.textViewLastName);
         textViewStudentID = findViewById(R.id.textViewStudentID);
         buttonChat = findViewById(R.id.buttonChat);
         buttonBlock = findViewById(R.id.buttonBlock);
-
 
         // Create a query to find the user with the specified email
         Query query = usersRef.orderByChild("email").equalTo(email);
@@ -67,7 +72,21 @@ public class ViewProfile extends AppCompatActivity {
                         textViewLastName.setText(user.getLastName());
                         textViewStudentID.setText(user.getStudentID());
 
+                        System.out.println("existing");
                         String toBlockUID =userSnapshot.child("UID").getValue(String.class);
+
+
+                        if (userSnapshot.child("profilePicture").exists()) {
+                            String profilePictureUrl = dataSnapshot.child(toBlockUID).child("profilePicture").getValue(String.class);
+                            System.out.println("pfp url"+profilePictureUrl);
+                            // Load the profile picture into the ImageView using Glide or other image loading libraries
+                            Glide.with(ViewProfile.this)
+                                    .load(profilePictureUrl)
+                                    .placeholder(R.drawable.ic_add_profile) // Placeholder image
+                                    .error(R.drawable.ic_add_profile) // Error image if loading fails
+                                    .into(profileImageView);
+                        }
+
 
                         mAuth = FirebaseAuth.getInstance();
                         mDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
@@ -113,15 +132,56 @@ public class ViewProfile extends AppCompatActivity {
         buttonChat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Create an Intent to start the new activity
-                //TODO: this needs to be fixed to go to the right place
-                Intent chatIntent = new Intent(ViewProfile.this, TabbedFeatures.class);
+                Query query = usersRef.orderByChild("email").equalTo(email);
+                query.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.exists()) {
+                            for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
+                                String chatUID = userSnapshot.child("UID").getValue(String.class);
 
-                // Pass the email as an extra in the Intent
-                chatIntent.putExtra("email", email);
+                                String currentUID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                                DatabaseReference currentUserRef = usersRef.child(currentUID);
+                                currentUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot userSnapshot) {
+                                        if (userSnapshot.exists()) {
+                                            String existingChatString = userSnapshot.child("chatString").getValue(String.class);
+                                            if (existingChatString!=null) {
+                                                if (!existingChatString.contains(chatUID)) {
+                                                    currentUserRef.child("chatString").setValue(existingChatString + "," + chatUID);
+                                                }
+                                            }
+                                            else {
+                                                currentUserRef.child("chatString").setValue("," + chatUID);
 
-                // Start the new activity
-                startActivity(chatIntent);
+                                            }
+
+                                            // Now, proceed to start the chat
+                                            Intent chatIntent = new Intent(ViewProfile.this, MessageActivity.class);
+                                            chatIntent.putExtra("friendid", chatUID);
+                                            startActivity(chatIntent);
+                                        }
+                                    }
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+                                        // Handle database error
+                                        // If onCancelled method is required, implement it here
+                                    }
+                                });
+                            }
+                        } else {
+                            // Handle the case where the email was not found
+                        }
+
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        // Handle database error
+                    }
+                });
             }
         });
 

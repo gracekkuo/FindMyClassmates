@@ -1,5 +1,6 @@
 package com.example.findmyclassmates.activities.mainFeatures;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -9,9 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.findmyclassmates.R;
+import com.example.findmyclassmates.activities.LoginActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -19,6 +22,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import com.bumptech.glide.Glide;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -41,11 +47,13 @@ public class ProfileFragment extends Fragment {
     private EditText editTextStudentID;
     private Button buttonSave;
     private Button buttonCancel;
+    private Button buttonLogout;
     private TextView invalidBlank;
     private TextView invalidStudentID;
     DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
     FirebaseUser currentUser;
+    private ImageView profileImageView;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -70,10 +78,10 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
+        /*if (getArguments() != null) {
             //mParam1 = getArguments().getString(ARG_PARAM1);
             //mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+        }*/
     }
 
     @Override
@@ -83,6 +91,7 @@ public class ProfileFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
+        profileImageView = view.findViewById(R.id.profile_image_display);
         textViewFirstName = view.findViewById(R.id.textViewFirstName);
         editTextFirstName = view.findViewById(R.id.editTextFirstName);
         textViewLastName = view.findViewById(R.id.textViewLastName);
@@ -91,12 +100,12 @@ public class ProfileFragment extends Fragment {
         editTextStudentID = view.findViewById(R.id.editTextStudentID);
         buttonSave = view.findViewById(R.id.buttonSave);
         buttonCancel = view.findViewById(R.id.buttonCancel);
+        buttonLogout = view.findViewById(R.id.buttonLogout);
         invalidBlank = view.findViewById(R.id.invalidBlank);
         invalidStudentID = view.findViewById(R.id.invalidStudentID);
 
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
-
 
         currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
@@ -114,6 +123,17 @@ public class ProfileFragment extends Fragment {
                         textViewFirstName.setText(firstName);
                         textViewLastName.setText(lastName);
                         textViewStudentID.setText(studentID);
+
+                        if (dataSnapshot.child("profilePicture").exists()) {
+                            String profilePictureUrl = dataSnapshot.child("profilePicture").getValue(String.class);
+
+                            // Load the profile picture into the ImageView using Glide or other image loading libraries
+                            Glide.with(getContext())
+                                    .load(profilePictureUrl)
+                                    .placeholder(R.drawable.ic_add_profile) // Placeholder image
+                                    .error(R.drawable.ic_add_profile) // Error image if loading fails
+                                    .into(profileImageView);
+                        }
                     }
                 }
 
@@ -136,9 +156,21 @@ public class ProfileFragment extends Fragment {
         buttonSave.setVisibility(View.GONE);
         buttonCancel.setVisibility(View.GONE);
 
+        buttonLogout.setOnClickListener(v -> logoutUser());
+
 
         return view;
         //return inflater.inflate(R.layout.fragment_profile, container, false);
+    }
+
+    private void logoutUser() {
+        FirebaseAuth.getInstance().signOut();
+        if (getActivity() != null) {
+            Intent intent = new Intent(getActivity(), LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            getActivity().finish(); // Optional: Finish the current activity
+        }
     }
 
 
