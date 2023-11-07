@@ -10,11 +10,15 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.findmyclassmates.R;
 import com.example.findmyclassmates.models.Review;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -114,6 +118,7 @@ public class ReviewsActivity extends AppCompatActivity {
             TextView downvoteCountTextView = convertView.findViewById(R.id.downvoteCountTextView);
             ImageButton upvoteButton = convertView.findViewById(R.id.upvoteButton);
             ImageButton downvoteButton = convertView.findViewById(R.id.downvoteButton);
+            Button deleteButton = convertView.findViewById(R.id.deleteReviewButton);
             TextView user = convertView.findViewById(R.id.user);
 
             Review review = getItem(position);
@@ -168,6 +173,30 @@ public class ReviewsActivity extends AppCompatActivity {
                         downvoteCountTextView.setText(String.valueOf(downvotes));
                         reviewRef.child("downvotes").setValue(review.getDownvotes());
                         downvoteButton.setTag(null); // Remove the downvote
+                    }
+                }
+            });
+
+            FirebaseAuth mAuth = FirebaseAuth.getInstance();
+            FirebaseUser currentUser = mAuth.getCurrentUser();
+            deleteButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    System.out.println(currentUser.getUid() + " " + review.getUserId());
+                    if (currentUser != null && currentUser.getUid().equals(review.getUserId())) {
+                        DatabaseReference reviewRef = FirebaseDatabase.getInstance().getReference("reviews").child(review.getUid());
+
+                        reviewRef.removeValue()
+                                .addOnSuccessListener(aVoid -> {
+                                    // Remove the item from the adapter and notify the changes
+                                    remove(review);
+                                    notifyDataSetChanged();
+                                })
+                                .addOnFailureListener(e -> {
+                                });
+                    } else {
+                        // The logged-in user is not the creator of this review
+                        Toast.makeText(getContext(), "You don't have permission to delete this review.", Toast.LENGTH_SHORT).show();
                     }
                 }
             });

@@ -36,15 +36,15 @@ public class addReviewsToDB {
             String reviewComment2 = "it can get tough sometimes";
 
             // Add the first review
-            addReview(databaseReference, dept, courseID, reviewComment1, 4, "mandatory", "accepts late homework", "nothing else to say", 0, 0, "John Doe");
+            //addReview(databaseReference, dept, courseID, reviewComment1, 4, "mandatory", "accepts late homework", "nothing else to say", 0, 0, "John Doe");
 
             // Add the second review
-            addReview(databaseReference, dept, courseID, reviewComment2, 5, "not sure", "late policy in syllabus", "Other comments", 0, 0, "Jane Doe");
+            //addReview(databaseReference, dept, courseID, reviewComment2, 5, "not sure", "late policy in syllabus", "Other comments", 0, 0, "Jane Doe");
         }
 
     }
 
-    public static void addReview(DatabaseReference databaseReference, String dept, String courseID, String one, int two, String three, String four, String five, int upvotes, int downvotes, String user ) {
+    public static void addReview(String uid, DatabaseReference databaseReference, String dept, String courseID, String one, int two, String three, String four, String five, int upvotes, int downvotes) {
         DatabaseReference reviewRef = databaseReference.child("reviews");
 
         //1. The workload of the class
@@ -63,13 +63,31 @@ public class addReviewsToDB {
         reviewData.put("five", five);
         reviewData.put("upvotes", upvotes);
         reviewData.put("downvotes", downvotes);
-        reviewData.put("user", user);
+        reviewData.put("userId", uid);
 
-        reviewRef.push().setValue(reviewData, (error, ref) -> {
-            if (error == null) {
-                System.out.println("Review added successfully");
-            } else {
-                System.err.println("Review addition failed: " + error.getMessage());
+        DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference().child("Users");
+        usersRef.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    String firstName = dataSnapshot.child("firstName").getValue(String.class);
+                    String lastName = dataSnapshot.child("lastName").getValue(String.class);
+                    reviewData.put("user", firstName+" " +lastName);
+
+                    reviewRef.push().setValue(reviewData, (error, ref) -> {
+                        if (error == null) {
+                            System.out.println("Review added successfully");
+                        } else {
+                            System.err.println("Review addition failed: " + error.getMessage());
+                        }
+                    });
+                } else {
+                    // Handle the case where the user data was not found
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Handle database error
             }
         });
     }
