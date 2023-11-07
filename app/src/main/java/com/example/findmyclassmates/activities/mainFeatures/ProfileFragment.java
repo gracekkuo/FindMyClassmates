@@ -92,7 +92,6 @@ public class ProfileFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
         profileImageView = view.findViewById(R.id.profile_image_display);
-
         textViewFirstName = view.findViewById(R.id.textViewFirstName);
         editTextFirstName = view.findViewById(R.id.editTextFirstName);
         textViewLastName = view.findViewById(R.id.textViewLastName);
