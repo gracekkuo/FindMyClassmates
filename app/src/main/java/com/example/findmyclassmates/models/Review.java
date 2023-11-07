@@ -12,12 +12,13 @@ public class Review {
     private int downvotes;
     private String user;
     private String uid;
+    private String userId;
 
     public Review() {
         // Default constructor required for Firebase database
     }
 
-    public Review(String dept, String courseID, String one, int two, String three, String four, String five, int upvotes, int downvotes, String user) {
+    public Review(String dept, String courseID, String one, int two, String three, String four, String five, int upvotes, int downvotes, String user, String userId) {
         this.dept = dept;
         this.courseID = courseID;
         this.one = one;
@@ -28,8 +29,10 @@ public class Review {
         this.upvotes = upvotes;
         this.downvotes = downvotes;
         this.user = user;
+        this.userId = userId;
     }
 
+    public String getUserId() {return userId; };
     public String getUid() {
         return uid;
     }

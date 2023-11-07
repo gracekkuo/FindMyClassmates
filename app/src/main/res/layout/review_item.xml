@@ -145,4 +145,19 @@
             android:layout_marginStart="4dp"
             android:text="0" />
     </LinearLayout>
+    <Button
+        android:id="@+id/editReviewButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Edit"
+        android:layout_below="@id/user"
+        android:layout_alignParentEnd="true" />
+
+    <Button
+        android:id="@+id/deleteReviewButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Delete"
+        android:layout_toStartOf="@id/editReviewButton"
+        android:layout_below="@id/user" />
 </RelativeLayout>

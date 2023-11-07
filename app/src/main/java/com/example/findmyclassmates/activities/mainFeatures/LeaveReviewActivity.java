@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.findmyclassmates.R;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -22,6 +23,8 @@ public class LeaveReviewActivity extends AppCompatActivity {
     private EditText response1, response2, response3, response4, response5;
     private Button submitButton;
 
+    private FirebaseAuth mAuth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +34,8 @@ public class LeaveReviewActivity extends AppCompatActivity {
         dept = intent.getStringExtra("dept");
         courseID = intent.getStringExtra("courseID");
         this.databaseReference = FirebaseDatabase.getInstance().getReference();
+        mAuth = FirebaseAuth.getInstance(); // Initialize FirebaseAuth
+
 
         // Initialize your EditText fields and the submit button
         response1 = findViewById(R.id.response1);
@@ -59,8 +64,9 @@ public class LeaveReviewActivity extends AppCompatActivity {
                             // You can proceed with further actions or submit the form.
                             addReviewsToDB addReviewsToDB = new addReviewsToDB();
                             //TODO: make user the actual user's name
-                            addReviewsToDB.addReview(databaseReference, dept, courseID, response1.getText().toString(), Integer.parseInt(response2.getText().toString()),
-                                    response3.getText().toString(), response4.getText().toString(), response5.getText().toString(), 0, 0, "testUser");
+                            String uid = mAuth.getCurrentUser().getUid();
+                            addReviewsToDB.addReview(uid, databaseReference, dept, courseID, response1.getText().toString(), Integer.parseInt(response2.getText().toString()),
+                                    response3.getText().toString(), response4.getText().toString(), response5.getText().toString(), 0, 0);
                             finish();
                         }
                     } catch (NumberFormatException e) {
