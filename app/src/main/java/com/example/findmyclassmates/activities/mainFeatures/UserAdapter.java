@@ -62,7 +62,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MyHolder> {
 
         friendid = user.getUID();
 
-        System.out.println("FRIENDID #1: " + friendid);
+//        System.out.println("FRIENDID #1: " + friendid);
 
 
         holder.username.setText(user.getFirstName());
@@ -148,7 +148,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MyHolder> {
 
             friendid = users.getUID();
 
-            System.out.println("FRIENDID #2: " + friendid);
+//            System.out.println("FRIENDID #2: " + friendid);
 
             Intent intent = new Intent(context, MessageActivity.class);
             intent.putExtra("friendid", friendid);
@@ -177,10 +177,10 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MyHolder> {
 
                     if (firebaseUser!=null &&  chats!=null) {
 
-                        System.out.println("FRIENDID: " + friendid);
-                        System.out.println("SENDER: " + chats.getSender());
-                        System.out.println("YOUR UID: " + firebaseUser.getUid());
-                        System.out.println("SENDER: " + chats.getReciever());
+//                        System.out.println("FRIENDID: " + friendid);
+//                        System.out.println("SENDER: " + chats.getSender());
+//                        System.out.println("YOUR UID: " + firebaseUser.getUid());
+//                        System.out.println("SENDER: " + chats.getReciever());
 
                         if (chats.getSender().equals(friendid) && chats.getReciever().equals(firebaseUser.getUid()) ||
                                 chats.getSender().equals(firebaseUser.getUid()) && chats.getReciever().equals(friendid)) {

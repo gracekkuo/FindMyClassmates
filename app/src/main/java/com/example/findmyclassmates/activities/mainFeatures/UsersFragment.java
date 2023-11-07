@@ -60,17 +60,58 @@ public class UsersFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 usersList.clear();
 
+                String[] blockedIds = new String[0];
+                String[] chatIDs = new String[0];
+                for (DataSnapshot ds: snapshot.getChildren()) {
+                    User users = ds.getValue(User.class);
+                    firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
+                    if(users.getUID().equals(firebaseUser.getUid())) {
+                        String temp = users.getBlockedIDs();
+//                        System.out.println("FROM FIREBASE:" + temp);
+                        blockedIds = temp.split(",");
+//                        System.out.println("BLOCKED IDS" + blockedIds);
+
+                        String temp2 = users.getChats();
+                        chatIDs = temp2.split(",");
+                    }
+                }
+                
                 for (DataSnapshot ds: snapshot.getChildren()) {
 
                     User users = ds.getValue(User.class);
 
                     firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-
-
+                    
+                    // USERS ARE ADDED HERE
+//                    HANDLE BLOCKED USER ID HERE
                     if (!users.getUID().equals(firebaseUser.getUid())) {
 
+                        //if the current UID is blocked, then we break
+                        boolean blocked = false;
+                        for(String id : blockedIds) {
+                            if(id.equals(users.getUID())) {
+                                blocked = true;
+                                break;
+                            }
+                        }
 
-                        usersList.add(users);
+                        //we reach here if the UID is not blocked
+                        if(!blocked) {
+
+                            //if the UID is WITHIN THE VALID CHATS OF THE FIREBASE USER THEN WE ADD
+                            boolean validChat = false;
+                            for(String id : chatIDs) {
+                                if(id.equals(users.getUID())) {
+                                    validChat = true;
+                                    break;
+                                }
+                            }
+
+                            if(validChat){
+                                usersList.add(users);
+                            }
+                        }
 
                     }
 

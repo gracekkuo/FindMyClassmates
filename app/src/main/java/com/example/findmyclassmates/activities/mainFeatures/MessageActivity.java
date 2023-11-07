@@ -81,7 +81,7 @@ public class MessageActivity extends AppCompatActivity {
 
         friendid = getIntent().getStringExtra("friendid"); // retreive the friendid when we click on the item
 
-        System.out.println("FRIEND ID" + friendid);
+//        System.out.println("FRIEND ID" + friendid);
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -92,7 +92,7 @@ public class MessageActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
                 User user = snapshot.getValue(User.class);
-                System.out.println(user);
+//                System.out.println(user);
 
 
 //                usernameonToolbar.setText("default");
