@@ -28,9 +28,13 @@ public class courseFinder {
     public String email="test@gmail.com";
     private FirebaseAuth mAuth;
     DatabaseReference mDatabase;
+    FirebaseUser currentUser;
 
     public courseFinder(DatabaseReference databaseReference) {
         this.databaseReference = FirebaseDatabase.getInstance().getReference("courses");
+        mAuth = FirebaseAuth.getInstance();
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
+        currentUser = mAuth.getCurrentUser();
     }
 
     public Course findCourse(String departmentToFind, String courseIDToFind, Context context) {
@@ -76,9 +80,9 @@ public class courseFinder {
                         Button registerButton = view.findViewById(com.example.findmyclassmates.R.id.buttonRegister);
                         Button rosterButton = view.findViewById(R.id.buttonRoster);
                         //set other text
-                        mAuth = FirebaseAuth.getInstance();
-                        mDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
-                        FirebaseUser currentUser = mAuth.getCurrentUser();
+                        //mAuth = FirebaseAuth.getInstance();
+                        //mDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
+                        //currentUser = mAuth.getCurrentUser();
                         //set initial title and visibility
                         if (currentUser != null) {
                             String userID = currentUser.getUid();
@@ -125,7 +129,7 @@ public class courseFinder {
                                                 email=dataSnapshot.child("email").getValue(String.class);
                                                 if(!enrolledClasses.contains(departmentToFind+courseIDToFind))
                                                 {
-                                                    System.out.println("you are not enrolled in this class");
+                                                    System.out.println("you are enrolling in this class");
                                                     dataSnapshot.child("enrolledClasses").getRef().setValue(enrolledClasses+=","+departmentToFind+courseIDToFind);
                                                     // If the text is "Register," change it to "Drop Class"
                                                     registerButton.setText("Drop Class");
@@ -137,7 +141,7 @@ public class courseFinder {
                                                         @Override
                                                         public void onDataChange(DataSnapshot dataSnapshot) {
                                                             for (DataSnapshot deptCourseSnapshot : dataSnapshot.getChildren()) {
-                                                                String deptCourseID = deptCourseSnapshot.getKey();
+                                                                //String deptCourseID = deptCourseSnapshot.getKey();
 
                                                                 // Create a new student object
                                                                 Student student = new Student(firstName, lastName, email);
@@ -146,6 +150,7 @@ public class courseFinder {
                                                                 Map<String, Student> studentsMap = new HashMap<>();
                                                                 if (deptCourseSnapshot.child("students").getValue() != null) {
                                                                     studentsMap = (Map<String, Student>) deptCourseSnapshot.child("students").getValue();
+                                                                    System.out.println("retrieved map");
                                                                 }
 
                                                                 // Generate a unique key for the student
@@ -153,20 +158,26 @@ public class courseFinder {
 
                                                                 // Add the student to the map
                                                                 studentsMap.put(studentKey, student);
+                                                                System.out.println("added student to map");
+                                                                /*for (Map.Entry<String, Student> entry : studentsMap.entrySet()) {
+                                                                    System.out.println(entry.getKey() + ": " + entry.getValue().getEmail());
+                                                                }*/
 
                                                                 // Update the students map in the database
                                                                 deptCourseSnapshot.child("students").getRef().setValue(studentsMap);
+                                                                System.out.println("pushed map");
                                                             }
                                                         }
 
                                                         @Override
                                                         public void onCancelled(DatabaseError databaseError) {
                                                             // Handle any errors here
+                                                            System.out.println("hit an error adding to the database");
                                                         }
                                                     });
                                                 } else {
                                                     // If the text is "Drop Class," change it back to "Register"
-                                                    System.out.println("you ARE enrolled in this class");
+                                                    System.out.println("you are dropping this class");
                                                     registerButton.setText("Register");
                                                     rosterButton.setVisibility(view.GONE);
                                                     // TODO: update the database
