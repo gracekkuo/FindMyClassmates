@@ -142,21 +142,41 @@ public class ViewProfile extends AppCompatActivity {
 
                                 String currentUID = FirebaseAuth.getInstance().getCurrentUser().getUid();
                                 DatabaseReference currentUserRef = usersRef.child(currentUID);
+                                DatabaseReference receivingUserRef = usersRef.child(chatUID);
                                 currentUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(DataSnapshot userSnapshot) {
                                         if (userSnapshot.exists()) {
-                                            String existingChatString = userSnapshot.child("chatString").getValue(String.class);
+                                            String existingChatString = userSnapshot.child("chats").getValue(String.class);
                                             if (existingChatString!=null) {
                                                 if (!existingChatString.contains(chatUID)) {
-                                                    currentUserRef.child("chatString").setValue(existingChatString + "," + chatUID);
+                                                    currentUserRef.child("chats").setValue(existingChatString + "," + chatUID);
                                                 }
                                             }
                                             else {
-                                                currentUserRef.child("chatString").setValue("," + chatUID);
+                                                currentUserRef.child("chats").setValue("," + chatUID);
 
                                             }
 
+                                            // Update the receiving user's chat string too
+                                            receivingUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                @Override
+                                                public void onDataChange(DataSnapshot receivingUserSnapshot) {
+                                                    if (receivingUserSnapshot.exists()) {
+                                                        String receivingUserChatString = receivingUserSnapshot.child("chats").getValue(String.class);
+                                                        if (receivingUserChatString != null && !receivingUserChatString.contains(currentUID)) {
+                                                            receivingUserRef.child("chats").setValue(receivingUserChatString + "," + currentUID);
+                                                        } else if (receivingUserChatString == null) {
+                                                            receivingUserRef.child("chats").setValue("," + currentUID);
+                                                        }
+                                                    }
+                                                }
+
+                                                @Override
+                                                public void onCancelled(DatabaseError databaseError) {
+                                                    // Handle the error
+                                                }
+                                            });
                                             // Now, proceed to start the chat
                                             Intent chatIntent = new Intent(ViewProfile.this, MessageActivity.class);
                                             chatIntent.putExtra("friendid", chatUID);
@@ -223,6 +243,27 @@ public class ViewProfile extends AppCompatActivity {
                                                     buttonBlock.setText("Unblock User");
                                                     currUserSnapshot.child("blockedIDs").getRef().setValue(blockedIDs += "," + toBlockUID);
                                                 }
+
+                                                // Update the blocked IDs for the user being blocked
+                                                DatabaseReference userToBlockRef = mDatabase.child(toBlockUID);
+                                                userToBlockRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                    @Override
+                                                    public void onDataChange(DataSnapshot userToBlockSnapshot) {
+                                                        if (userToBlockSnapshot.exists()) {
+                                                            String userToBlockBlockedIDs = userToBlockSnapshot.child("blockedIDs").getValue(String.class);
+                                                            if (userToBlockBlockedIDs.contains("," + userID)) {
+                                                                userToBlockRef.child("blockedIDs").getRef().setValue(userToBlockBlockedIDs.replaceAll("," + userID, ""));
+                                                            } else {
+                                                                userToBlockRef.child("blockedIDs").getRef().setValue(userToBlockBlockedIDs += "," + userID);
+                                                            }
+                                                        }
+                                                    }
+
+                                                    @Override
+                                                    public void onCancelled(DatabaseError databaseError) {
+                                                        // Handle the error
+                                                    }
+                                                });
                                             }
                                         }
 
