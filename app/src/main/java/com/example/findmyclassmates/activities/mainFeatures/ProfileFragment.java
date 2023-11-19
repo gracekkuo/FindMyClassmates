@@ -45,11 +45,16 @@ public class ProfileFragment extends Fragment {
     private EditText editTextLastName;
     private TextView textViewStudentID;
     private EditText editTextStudentID;
+
+    private TextView textViewStatus;
+    private EditText editTextStatus;
+
     private Button buttonSave;
     private Button buttonCancel;
     private Button buttonLogout;
     private TextView invalidBlank;
     private TextView invalidStudentID;
+    private TextView invalidStatus;
     DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
     FirebaseUser currentUser;
@@ -98,11 +103,16 @@ public class ProfileFragment extends Fragment {
         editTextLastName = view.findViewById(R.id.editTextLastName);
         textViewStudentID = view.findViewById(R.id.textViewStudentID);
         editTextStudentID = view.findViewById(R.id.editTextStudentID);
+
+        textViewStatus = view.findViewById(R.id.textViewStatus);
+        editTextStatus = view.findViewById(R.id.editTextStatus);
+
         buttonSave = view.findViewById(R.id.buttonSave);
         buttonCancel = view.findViewById(R.id.buttonCancel);
         buttonLogout = view.findViewById(R.id.buttonLogout);
         invalidBlank = view.findViewById(R.id.invalidBlank);
         invalidStudentID = view.findViewById(R.id.invalidStudentID);
+        invalidStatus = view.findViewById(R.id.invalidStatus);
 
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
@@ -123,6 +133,7 @@ public class ProfileFragment extends Fragment {
                         textViewFirstName.setText(firstName);
                         textViewLastName.setText(lastName);
                         textViewStudentID.setText(studentID);
+                        textViewStatus.setText("Undergraduate Student");
 
                         if (dataSnapshot.child("profilePicture").exists()) {
                             String profilePictureUrl = dataSnapshot.child("profilePicture").getValue(String.class);
@@ -148,6 +159,8 @@ public class ProfileFragment extends Fragment {
         textViewFirstName.setOnClickListener(v -> enableEditing(textViewFirstName, editTextFirstName));
         textViewLastName.setOnClickListener(v -> enableEditing(textViewLastName, editTextLastName));
         textViewStudentID.setOnClickListener(v -> enableEditing(textViewStudentID, editTextStudentID));
+        textViewStatus.setOnClickListener(v -> enableEditing(textViewStatus, editTextStatus));
+
         // Set click listener for the "Save" button
         buttonSave.setOnClickListener(v -> saveChanges());
         // Set click listener for the "Cancel" button
@@ -186,6 +199,7 @@ public class ProfileFragment extends Fragment {
     private void saveChanges() {
         invalidBlank.setVisibility(View.GONE);
         invalidStudentID.setVisibility(View.GONE);
+        invalidStatus.setVisibility(View.GONE);
         if(editTextFirstName.getVisibility()==View.VISIBLE)
         {
             String newFirstName = editTextFirstName.getText().toString().trim();
@@ -235,14 +249,32 @@ public class ProfileFragment extends Fragment {
                 }
             }
         }
+        if(editTextStatus.getVisibility()==View.VISIBLE) {
+            String newStatus = editTextStatus.getText().toString().trim();
+            if (newStatus.isEmpty())
+            {
+                //set textview visible
+                invalidBlank.setVisibility(View.VISIBLE);
+            }
+            else if(!newStatus.equals("Undergraduate Student") && !newStatus.equals("Graduate Student") &&
+                    !newStatus.equals("Faculty") && !newStatus.equals("Staff")) {
+                //not equal to any of the valid statuses
+                invalidStatus.setVisibility(View.VISIBLE);
+            }
+            else {
+                textViewStatus.setText(newStatus);
+            }
+        }
         // Hide the EditText field
         editTextFirstName.setVisibility(View.INVISIBLE);
         editTextLastName.setVisibility(View.INVISIBLE);
         editTextStudentID.setVisibility(View.INVISIBLE);
+        editTextStatus.setVisibility(View.INVISIBLE);
         // Show the TextView
         textViewFirstName.setVisibility(View.VISIBLE);
         textViewLastName.setVisibility(View.VISIBLE);
         textViewStudentID.setVisibility(View.VISIBLE);
+        textViewStatus.setVisibility(View.VISIBLE);
         //make buttons invisible
         buttonSave.setVisibility(View.INVISIBLE);
         buttonCancel.setVisibility(View.INVISIBLE);
@@ -274,10 +306,12 @@ public class ProfileFragment extends Fragment {
         editTextFirstName.setVisibility(View.INVISIBLE);
         editTextLastName.setVisibility(View.INVISIBLE);
         editTextStudentID.setVisibility(View.INVISIBLE);
+        editTextStatus.setVisibility(View.INVISIBLE);
         // Show the TextView
         textViewFirstName.setVisibility(View.VISIBLE);
         textViewLastName.setVisibility(View.VISIBLE);
         textViewStudentID.setVisibility(View.VISIBLE);
+        textViewStatus.setVisibility(View.VISIBLE);
         //make buttons invisible
         buttonSave.setVisibility(View.GONE);
         buttonCancel.setVisibility(View.GONE);

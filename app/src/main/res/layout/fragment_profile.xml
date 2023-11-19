@@ -110,13 +110,21 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Status: Student"
+                android:text="Status: "
+                android:layout_gravity="center_vertical"/>
+
+            <TextView
+                android:id="@+id/textViewStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
                 android:layout_gravity="center_vertical"/>
 
             <EditText
+                android:id="@+id/editTextStatus"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="user type"
+                android:hint="Status"
                 android:visibility="invisible"/>
         </LinearLayout>
         <!-- Add more TextViews for other user info (Last Name, Student ID, Email, Profession, etc.) -->
@@ -157,6 +165,14 @@
             android:text="*Student ID must be 10 numerical digits, changes not saved."
             android:layout_gravity="center_vertical"
             android:visibility="gone"/>
+        <TextView
+            android:id="@+id/invalidStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="*Status must be 'Undergraduate Student', 'Graduate Student', 'Faculty', or 'Staff'."
+            android:layout_gravity="center_vertical"
+            android:visibility="gone"/>
+
 
     </LinearLayout>
 
