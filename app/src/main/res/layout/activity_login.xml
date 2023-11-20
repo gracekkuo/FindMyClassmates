@@ -58,6 +58,13 @@
 
             android:text="Don't have an account? Sign Up" />
 
+        <TextView
+            android:id="@+id/tv_result"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:text="default" />
+
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

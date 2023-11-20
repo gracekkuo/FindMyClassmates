@@ -22,6 +22,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private EditText emailEditText;
     private EditText passwordEditText;
+    private TextView tv_result;
 
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
@@ -33,6 +34,7 @@ public class LoginActivity extends AppCompatActivity {
         // Find the EditTexts by their IDs
         emailEditText = findViewById(R.id.emailEditText);
         passwordEditText = findViewById(R.id.passwordEditText);
+        tv_result = findViewById(R.id.tv_result);
 
         Button loginButton = findViewById(R.id.loginButton);
         loginButton.setOnClickListener(v -> {
@@ -49,8 +51,11 @@ public class LoginActivity extends AppCompatActivity {
             mAuth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener(LoginActivity.this, task -> {
                         if (task.isSuccessful()) {
+                            tv_result.setText("true");
+                            System.out.println(tv_result.getText());
                             // Login successful, update UI
                             FirebaseUser user = mAuth.getCurrentUser();
+                            Toast.makeText(LoginActivity.this, "Login Success!", Toast.LENGTH_SHORT).show();
                             if (user != null) {
                                 // Redirect to the next activity
                                 startActivity(new Intent(LoginActivity.this, TabbedFeatures.class));
@@ -58,6 +63,8 @@ public class LoginActivity extends AppCompatActivity {
                         } else {
                             // Login failed, display an error message
                             Toast.makeText(LoginActivity.this, "Login failed. Please try again.", Toast.LENGTH_SHORT).show();
+                            tv_result.setText("false");
+                            System.out.println(tv_result.getText());
                         }
                     });
 

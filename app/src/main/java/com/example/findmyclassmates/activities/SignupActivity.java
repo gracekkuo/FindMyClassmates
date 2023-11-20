@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.findmyclassmates.R;
@@ -60,6 +61,8 @@ public class SignupActivity extends AppCompatActivity {
     private ImageView profileImageView;
     private boolean uploadImage;
     private Uri uri;
+
+    private TextView signup_tv_result;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,6 +75,7 @@ public class SignupActivity extends AppCompatActivity {
         passwordEditText = findViewById(R.id.passwordEditText);
         reenterPassEditText = findViewById(R.id.reenterPasswordEditText);
         studentIdText = findViewById(R.id.studentIdEditText);
+        signup_tv_result = findViewById(R.id.signup_tv_result);
 
         Button uploadPictureButton = findViewById(R.id.uploadPictureButton);
 
@@ -115,20 +119,24 @@ public class SignupActivity extends AppCompatActivity {
                 String studentId = studentIdText.getText().toString();
 
                 if (!isValidEmail(email)) {
+                    signup_tv_result.setText("false");
                     Toast.makeText(SignupActivity.this, "Invalid email address", Toast.LENGTH_SHORT).show();
                     return; // Don't proceed further
                 }
                 if (!password.equals(reenter)) {
+                    signup_tv_result.setText("false");
                     Toast.makeText(SignupActivity.this, "Passwords do not match", Toast.LENGTH_SHORT).show();
                     return; // Don't proceed further
                 }
 
                 if (studentId.length() != 10){
+                    signup_tv_result.setText("false");
                     Toast.makeText(SignupActivity.this, "StudentId is less than 10 characters long.", Toast.LENGTH_SHORT).show();
                     return; // Don't proceed further
                 }
 
                 if (!isUSCValidEmail(email)){
+                    signup_tv_result.setText("false");
                     Toast.makeText(SignupActivity.this, "Not USC email address", Toast.LENGTH_SHORT).show();
                     return; // Don't proceed further
                 }
