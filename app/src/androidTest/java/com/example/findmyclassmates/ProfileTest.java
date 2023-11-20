@@ -73,7 +73,7 @@ public class ProfileTest {
         onView(withId(R.id.editTextFirstName)).check(matches(withText("newFirstName")));
 //        onView(withId(R.id.editTextFirstName)).check(matches(withText("Lola")));
 
-
+        // run other version to reset profile changes
         Thread.sleep(1000);
     }
 }
