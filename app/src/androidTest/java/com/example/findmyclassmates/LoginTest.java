@@ -60,11 +60,22 @@ public class LoginTest {
     }
 
     @Test
-    public void login_fail() throws InterruptedException {
+    public void login_fail_password() throws InterruptedException {
         onView(withId(R.id.emailEditText))
                 .perform(typeText("lb@usc.edu"), ViewActions.closeSoftKeyboard());
         onView(withId(R.id.passwordEditText))
                 .perform(typeText("12312"), ViewActions.closeSoftKeyboard());
+        onView(withId(R.id.loginButton)).perform(click());
+
+        Thread.sleep(1000);
+        onView(withId(R.id.tv_result)).check(matches(withText("false")));
+    }
+    @Test
+    public void login_fail_email() throws InterruptedException {
+        onView(withId(R.id.emailEditText))
+                .perform(typeText("lb@usc.ed"), ViewActions.closeSoftKeyboard());
+        onView(withId(R.id.passwordEditText))
+                .perform(typeText("123123"), ViewActions.closeSoftKeyboard());
         onView(withId(R.id.loginButton)).perform(click());
 
         Thread.sleep(1000);

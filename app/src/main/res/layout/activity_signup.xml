@@ -119,6 +119,13 @@
                     android:layout_height="wrap_content"
                     android:hint="Reenter Password"
                     android:inputType="textPassword" />
+
+                <TextView
+                    android:id="@+id/signup_tv_result"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:text ="default" />
+
             </LinearLayout>
 
             <!-- Profile Picture File Submission -->
