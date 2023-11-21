@@ -62,6 +62,8 @@ public class SignupActivity extends AppCompatActivity {
     private boolean uploadImage;
     private Uri uri;
 
+    private Checker checker;
+
     private TextView signup_tv_result;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +71,7 @@ public class SignupActivity extends AppCompatActivity {
         setContentView(R.layout.activity_signup);
 
         uploadImage = false;
+        checker = new Checker();
         firstNameText = findViewById(R.id.firstNameEditText);
         lastNameText = findViewById(R.id.lastNameEditText);
         emailEditText = findViewById(R.id.uscEmailEditText);
@@ -118,24 +121,24 @@ public class SignupActivity extends AppCompatActivity {
                 String reenter = reenterPassEditText.getText().toString();
                 String studentId = studentIdText.getText().toString();
 
-                if (!isValidEmail(email)) {
+                if (!checker.isValidEmail(email)) {
                     signup_tv_result.setText("false");
                     Toast.makeText(SignupActivity.this, "Invalid email address", Toast.LENGTH_SHORT).show();
                     return; // Don't proceed further
                 }
-                if (!password.equals(reenter)) {
+                if (!checker.isValidPasswordReenter(password, reenter)) {
                     signup_tv_result.setText("false");
                     Toast.makeText(SignupActivity.this, "Passwords do not match", Toast.LENGTH_SHORT).show();
                     return; // Don't proceed further
                 }
 
-                if (studentId.length() != 10){
+                if (!checker.isValidStudentId(studentId)){
                     signup_tv_result.setText("false");
                     Toast.makeText(SignupActivity.this, "StudentId is less than 10 characters long.", Toast.LENGTH_SHORT).show();
                     return; // Don't proceed further
                 }
 
-                if (!isUSCValidEmail(email)){
+                if (!checker.isUSCValidEmail(email)){
                     signup_tv_result.setText("false");
                     Toast.makeText(SignupActivity.this, "Not USC email address", Toast.LENGTH_SHORT).show();
                     return; // Don't proceed further
@@ -183,21 +186,8 @@ public class SignupActivity extends AppCompatActivity {
             }
         });
     }
-    private boolean isValidEmail(String email) {
-        // Regex pattern for basic email validation
-        String emailPattern = "[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}";
 
-        // Check if the email matches the pattern
-        return email.matches(emailPattern);
-    }
 
-    private boolean isUSCValidEmail(String email) {
-        // Regex pattern for basic email validation and checking for the domain @usc.edu
-        String emailPattern = "[a-zA-Z0-9._-]+@usc\\.edu";
-
-        // Check if the email matches the pattern
-        return email.matches(emailPattern);
-    }
 
     private void writeUserDataToDatabase(String userID, String studentId, String firstName, String lastName, String email) {
         usersRef.child(userID).child("firstName").setValue(firstName);

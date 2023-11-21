@@ -23,12 +23,15 @@ public class LeaveReviewActivity extends AppCompatActivity {
     private EditText response1, response2, response3, response4, response5;
     private Button submitButton;
 
+    private ReviewValidation rw;
+
     private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_leave_review);
+        rw = new ReviewValidation();
 
         Intent intent = getIntent();
         dept = intent.getStringExtra("dept");
