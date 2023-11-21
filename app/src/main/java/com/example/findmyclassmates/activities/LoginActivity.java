@@ -23,6 +23,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText emailEditText;
     private EditText passwordEditText;
     private TextView tv_result;
+    private Checker checker;
 
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
@@ -30,6 +31,8 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        checker = new Checker();
 
         // Find the EditTexts by their IDs
         emailEditText = findViewById(R.id.emailEditText);
@@ -42,7 +45,7 @@ public class LoginActivity extends AppCompatActivity {
             String email = emailEditText.getText().toString();
             String password = passwordEditText.getText().toString();
 
-            if (!isValidEmail(email)) {
+            if (!checker.isValidEmail(email)) {
                 // Show an error message for invalid email
                 Toast.makeText(LoginActivity.this, "Invalid email address", Toast.LENGTH_SHORT).show();
                 return; // Don't proceed further
