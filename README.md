@@ -64,15 +64,15 @@ Emulator Device: Google Pixel 2
 API version: 24
 -------------------------------------------------------
 
-KNOWN BUGS: 
+Updated README, since 2.4 12/1:
 
-Upvotes/Downvotes can happen infinitely
+Fixed BUGS: 
 
-Register drop and register a class it doesn’t register in the student table (Firebase)
+Upvotes/Downvotes can no longer happen infinitely
 
-App will crash during signup if a profile photo is not submitted
+Registering and dropping a class updates properly alongside the Firebase database
 
-Editing a review is currently not working
+Found a corrupted data within the database that was destroying the app flow, preventing the app from swiping to other tabs aside from the primary class tab.
+  -Previously, swiping to the chat tab and profile tab would crash the app, due to the database trying to load faulty data.
 
-Push notifications is currently not working
-
+Editing a review is now functional, previously the review item was not updating properly.
