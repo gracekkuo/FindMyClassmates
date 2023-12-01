@@ -119,6 +119,7 @@ public class ReviewsActivity extends AppCompatActivity {
             ImageButton upvoteButton = convertView.findViewById(R.id.upvoteButton);
             ImageButton downvoteButton = convertView.findViewById(R.id.downvoteButton);
             Button deleteButton = convertView.findViewById(R.id.deleteReviewButton);
+            Button editButton = convertView.findViewById(R.id.editReviewButton);
             TextView user = convertView.findViewById(R.id.user);
 
             Review review = getItem(position);
@@ -200,6 +201,41 @@ public class ReviewsActivity extends AppCompatActivity {
                     }
                 }
             });
+
+            editButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    System.out.println(currentUser.getUid() + " " + review.getUserId());
+                    if (currentUser != null && currentUser.getUid().equals(review.getUserId())) {
+                        DatabaseReference reviewRef = FirebaseDatabase.getInstance().getReference("reviews").child(review.getUid());
+                        Intent intent = new Intent(ReviewsActivity.this, LeaveReviewActivity.class);
+
+                        // Pass the values as extras in the Intent
+                        intent.putExtra("dept", dept);
+                        intent.putExtra("courseID", courseID);
+                        intent.putExtra("r1", review.getOne());
+                        intent.putExtra("r2", String.valueOf(review.getTwo()));
+                        intent.putExtra("r3", review.getThree());
+                        intent.putExtra("r4", review.getFour());
+                        intent.putExtra("r5", review.getFive());
+
+                        // Start the new activity
+                        startActivity(intent);
+                        reviewRef.removeValue()
+                                .addOnSuccessListener(aVoid -> {
+                                    // Remove the item from the adapter and notify the changes
+                                    remove(review);
+                                    notifyDataSetChanged();
+                                })
+                                .addOnFailureListener(e -> {
+                                });
+                    } else {
+                        // The logged-in user is not the creator of this review
+                        Toast.makeText(getContext(), "You don't have permission to edit this review.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+
             return convertView;
         }
     }

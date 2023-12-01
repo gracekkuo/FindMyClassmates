@@ -46,6 +46,18 @@ public class LeaveReviewActivity extends AppCompatActivity {
         response3 = findViewById(R.id.response3);
         response4 = findViewById(R.id.response4);
         response5 = findViewById(R.id.response5);
+
+        if (intent.hasExtra("r1")) {
+            // Extra with key "key_name" exists in the intent
+            response1.setText(intent.getStringExtra("r1"));
+            response2.setText(intent.getStringExtra("r2"));
+            response3.setText(intent.getStringExtra("r3"));
+            response4.setText(intent.getStringExtra("r4"));
+            response5.setText(intent.getStringExtra("r5"));
+        } else {
+            // Extra with key "key_name" does not exist in the intent
+        }
+
         submitButton = findViewById(R.id.submitReview);
 
         submitButton.setOnClickListener(new View.OnClickListener() {
