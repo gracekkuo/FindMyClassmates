@@ -73,6 +73,7 @@ Upvotes/Downvotes can no longer happen infinitely
 Registering and dropping a class updates properly alongside the Firebase database
 
 Found a corrupted data within the database that was destroying the app flow, preventing the app from swiping to other tabs aside from the primary class tab.
+  
   -Previously, swiping to the chat tab and profile tab would crash the app, due to the database trying to load faulty data.
 
 Editing a review is now functional, previously the review item was not updating properly.
