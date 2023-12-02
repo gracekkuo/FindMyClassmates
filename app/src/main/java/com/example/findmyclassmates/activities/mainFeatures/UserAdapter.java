@@ -78,7 +78,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MyHolder> {
         }
 
 
-        if (isChat) {
+        /*if (isChat) {
 
             if (user.getStatus().equals("online")) {
 
@@ -101,7 +101,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MyHolder> {
             holder.image_off.setVisibility(View.GONE);
 
 
-        }
+        }*/
 
         if (isChat) {
 

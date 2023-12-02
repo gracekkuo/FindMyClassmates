@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.findmyclassmates.R;
+import com.example.findmyclassmates.activities.mainFeatures.FirebaseDataPopulator;
 import com.example.findmyclassmates.activities.mainFeatures.TabbedFeatures;
 
 public class MainActivity extends AppCompatActivity {
@@ -20,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //FirebaseDataPopulator.main();
         startActivity(new Intent(MainActivity.this, LoginActivity.class));
     }
 }

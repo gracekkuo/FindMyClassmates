@@ -43,15 +43,15 @@ public class FirebaseDataPopulator {
         // Create and populate a sample DeptCourseID with students
         DeptCourseID newDeptCourse = new DeptCourseID();
         newDeptCourse.setDeptCourseID(deptCourseID);
-        Student student1 = new Student("John", "Doe", "john.doe@example.com");
-        Student student2 = new Student("Jane", "Doe", "jane.doe@example.com");
+        //Student student1 = new Student("John", "Doe", "john.doe@example.com");
+        //Student student2 = new Student("Jane", "Doe", "jane.doe@example.com");
 
         // You can add more students here if needed
 
         // Create a map to associate students with their unique IDs
         Map<String, Student> students = new HashMap<>();
-        students.put(courseRosterRef.push().getKey(), student1);
-        students.put(courseRosterRef.push().getKey(), student2);
+        //students.put(courseRosterRef.push().getKey(), student1);
+        //students.put(courseRosterRef.push().getKey(), student2);
         // Set the students for the DeptCourseID
         newDeptCourse.setStudents(students);
 

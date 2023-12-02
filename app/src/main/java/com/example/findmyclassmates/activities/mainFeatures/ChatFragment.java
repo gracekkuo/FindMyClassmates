@@ -239,7 +239,7 @@ public class ChatFragment extends Fragment {
 
     }
 
-    @Override
+    /*@Override
     public void onResume() {
         super.onResume();
         Status("online");
@@ -249,5 +249,5 @@ public class ChatFragment extends Fragment {
     public void onPause() {
         super.onPause();
         Status("offline");
-    }
+    }*/
 }
