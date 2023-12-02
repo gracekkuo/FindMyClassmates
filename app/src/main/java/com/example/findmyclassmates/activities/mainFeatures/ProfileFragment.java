@@ -1,10 +1,16 @@
 package com.example.findmyclassmates.activities.mainFeatures;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
 
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,9 +18,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.findmyclassmates.R;
+import com.example.findmyclassmates.activities.Checker;
 import com.example.findmyclassmates.activities.LoginActivity;
+import com.example.findmyclassmates.activities.SignupActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -24,6 +33,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import java.io.IOException;
 
 
 /**
@@ -32,7 +45,6 @@ import com.bumptech.glide.Glide;
  * create an instance of this fragment.
  */
 public class ProfileFragment extends Fragment {
-
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     //private static final String ARG_PARAM1 = "param1";
@@ -59,6 +71,10 @@ public class ProfileFragment extends Fragment {
     private FirebaseAuth mAuth;
     FirebaseUser currentUser;
     private ImageView profileImageView;
+
+    private Checker checker;
+    private static final int PICK_IMAGE_REQUEST = 1;
+    private Uri uri;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -96,7 +112,33 @@ public class ProfileFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
+        checker = new Checker();
+
         profileImageView = view.findViewById(R.id.profile_image_display);
+        ActivityResultLauncher<Intent> mGetContent = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(), result -> {
+                    if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+                        uri = result.getData().getData();
+                        if (uri != null) {
+                            try {
+                                Bitmap bitmap = MediaStore.Images.Media.getBitmap(
+                                        requireActivity().getContentResolver(), uri);
+                                profileImageView.setImageBitmap(bitmap);
+                                // Trigger image upload when a new image is set
+                                uploadImageToFirebaseStorage(uri);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                });
+
+        profileImageView.setOnClickListener(v -> {
+            Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            galleryIntent.setType("image/*");
+            mGetContent.launch(galleryIntent);
+        });
+
         textViewFirstName = view.findViewById(R.id.textViewFirstName);
         editTextFirstName = view.findViewById(R.id.editTextFirstName);
         textViewLastName = view.findViewById(R.id.textViewLastName);
@@ -183,6 +225,46 @@ public class ProfileFragment extends Fragment {
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             getActivity().finish(); // Optional: Finish the current activity
+        }
+    }
+
+    private void uploadImageToFirebaseStorage(Uri imageUri) {
+        // Check if the image URI is not null
+        if (imageUri != null) {
+            StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+            StorageReference profileImagesRef = storageRef.child("profile_images")
+                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+
+            // Upload the image to Firebase Storage
+            profileImagesRef.putFile(imageUri)
+                    .addOnSuccessListener(taskSnapshot -> {
+                        // Image upload successful
+                        profileImagesRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                            // Save the image URL to the database
+                            saveImageUrlToDatabase(uri.toString());
+                        });
+                    })
+                    .addOnFailureListener(e -> {
+                        // Handle failure
+                        Toast.makeText(requireContext(), "Failed to upload image", Toast.LENGTH_SHORT).show();
+                    });
+        }
+    }
+
+    private void saveImageUrlToDatabase(String imageUrl) {
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser != null) {
+            DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUser.getUid());
+            userRef.child("profilePicture").setValue(imageUrl)
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            // Image URL saved successfully
+                            Toast.makeText(requireContext(), "Profile picture updated", Toast.LENGTH_SHORT).show();
+                        } else {
+                            // Handle failure
+                            Toast.makeText(requireContext(), "Failed to save image URL to the database", Toast.LENGTH_SHORT).show();
+                        }
+                    });
         }
     }
 

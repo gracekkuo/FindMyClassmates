@@ -143,14 +143,6 @@
             android:layout_gravity="center_horizontal"
             android:text="Cancel"/>
 
-        <Button
-            android:id="@+id/buttonLogout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Logout"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="16dp" />
-
         <TextView
             android:id="@+id/invalidBlank"
             android:layout_width="wrap_content"
@@ -172,6 +164,14 @@
             android:text="*Status must be 'Undergraduate Student', 'Graduate Student', 'Faculty', or 'Staff'."
             android:layout_gravity="center_vertical"
             android:visibility="gone"/>
+
+        <Button
+            android:id="@+id/buttonLogout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Logout"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp" />
 
 
     </LinearLayout>

@@ -10,7 +10,6 @@ public class User implements Serializable{
     private String firstName;
     private String lastName;
     private String profilePicture;
-    private String status;
     private String studentID;
     private String UID;
 
@@ -28,7 +27,6 @@ public class User implements Serializable{
         this.firstName = firstName;
         this.lastName = lastName;
         this.profilePicture = profilePicture;
-        this.status = status;
         this.studentID = studentID;
         this.UID = UID;
     }
@@ -89,14 +87,6 @@ public class User implements Serializable{
 
     public void setProfilePicture(String profilePicture) {
         this.profilePicture = profilePicture;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
     }
 
     public String getStudentID() {

@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.findmyclassmates.R;
+import com.example.findmyclassmates.activities.mainFeatures.FirebaseDataPopulator;
 import com.example.findmyclassmates.activities.mainFeatures.TabbedFeatures;
 import com.example.findmyclassmates.models.User;
 
@@ -31,7 +32,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
+        //FirebaseDataPopulator.main();
         checker = new Checker();
 
         // Find the EditTexts by their IDs

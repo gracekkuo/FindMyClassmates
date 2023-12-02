@@ -69,8 +69,6 @@ public class Roster extends AppCompatActivity {
                         for (Map.Entry<String, Student> entry : studentsMap.entrySet()) {
                             Map<String, Object> studentData = (Map<String, Object>) entry.getValue();
                             String email = (String) studentData.get("email");
-                            //String firstName = (String) studentData.get("firstName");
-                            //String lastName = (String) studentData.get("lastName");
 
                             Query query = usersRef.orderByChild("email").equalTo(email);
                             query.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -80,8 +78,8 @@ public class Roster extends AppCompatActivity {
                                     if (dataSnapshot.exists()) {
                                         // Iterate through the results
                                         for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
-                                            firstName=userSnapshot.child("firstName").getValue(String.class);
-                                            lastName=userSnapshot.child("lastName").getValue(String.class);
+                                            String firstName=userSnapshot.child("firstName").getValue(String.class);
+                                            String lastName=userSnapshot.child("lastName").getValue(String.class);
 
                                             String print = firstName + " " + lastName + "\t\t" + email;
 
