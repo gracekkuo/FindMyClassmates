@@ -2,13 +2,14 @@
 
 To Run the app:
 Pressing the play button will launch the app in the login screen. There are two ways you can start using the app:
+
 -You can login:
 
   -Some sample login info is:
   
     "lb@usc.edu", password = "123123"
     
-    "g@usc.edu", password = "123123"
+    "anniez@usc.edu", password = "123123"
     
 -You can signup:
 
@@ -17,7 +18,7 @@ Pressing the play button will launch the app in the login screen. There are two 
   -student ID must be 10 digits long
   
   -KNOWN BUG: the app WILL CRASH if a photo is not submitted in the "upload profile photo" button, so please do :)
-
+\n\n\n\n
 
 Once inside the app, you will be directed to the Classes Tab.
 
