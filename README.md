@@ -18,7 +18,6 @@ Pressing the play button will launch the app in the login screen. There are two 
   -student ID must be 10 digits long
   
   -KNOWN BUG: the app WILL CRASH if a photo is not submitted in the "upload profile photo" button, so please do :)
-\n\n\n\n
 
 Once inside the app, you will be directed to the Classes Tab.
 
@@ -65,7 +64,7 @@ Emulator Device: Google Pixel 2
 API version: 24
 -------------------------------------------------------
 
-Updated README, since 2.4 12/1:
+Updated README, since 2.4:
 
 Fixed BUGS: 
 
@@ -77,4 +76,14 @@ Found a corrupted data within the database that was destroying the app flow, pre
   
   -Previously, swiping to the chat tab and profile tab would crash the app, due to the database trying to load faulty data.
 
+Editing your profile is now functional
+
+  -you can now upload a new profile picture
+
+  -updating the profile will also update the firebase database properly
+
 Editing a review is now functional, previously the review item was not updating properly.
+
+  -a user can now update a review that they have left previously
+
+  -deleting a user-left review also now works properly
