@@ -102,7 +102,7 @@ public class CoursesTest {
         onView(withId(R.id.buttonRoster)).perform(click());
         Thread.sleep(1000);
 
-        onView(withText("Annie Zhang\t\tannie@usc.edu")).perform(click());
+        onView(withText("Annie Zhang\t\tanniez@usc.edu")).perform(click());
         Thread.sleep(1000);
 
         onView(withId(R.id.buttonChat)).perform(click());
