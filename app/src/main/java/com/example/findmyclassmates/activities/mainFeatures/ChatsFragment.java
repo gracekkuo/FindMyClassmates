@@ -94,48 +94,6 @@ public class ChatsFragment extends Fragment {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users");
 
 
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                mUsers.clear();
-
-                for (DataSnapshot ds: snapshot.getChildren()) {
-
-                    User users = ds.getValue(User.class);
-
-                    for (Chatslist chatslist: userlist) {
-
-
-                        if (users.getUID().equals(chatslist.getId())) {
-
-
-                            mUsers.add(users);
-
-
-
-
-                        }
-
-
-
-
-                    }
-
-
-                }
-
-                mAdapter = new UserAdapter(getContext(), mUsers, true);
-                recyclerView.setAdapter(mAdapter);
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
 
 
     }
